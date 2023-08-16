@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sqlcritic"
+version = "0.1.0"
+description = "Capture and analyze SQL queries made during a run your app's test suite"
+readme = "README.md"
+authors = [{ name = "Scott Nelson", email = "scott@scottnelson.co" }]
+dependencies = [
+  "boto3",
+  "opentelemetry-api>=1.11",
+  "opentelemetry-sdk>=1.11",
+  "PyGithub",
+]
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-mock"]
+
+[tool.pytest.ini_options]
+pythonpath = [
+  ".",
+]

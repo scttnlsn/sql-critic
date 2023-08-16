@@ -1,0 +1,20 @@
+name: "SQL Critic GitHub Action"
+author: "Scott Nelson"
+inputs:
+  repo-token:
+    description: "The GitHub token used to make PR comments"
+    required: true
+    default: ${{ github.token }}
+  data-path:
+    description: "The path to the JSON file containing the output of the SQL Critic query collector"
+    required: true
+  aws-access-key-id:
+    required: true
+  aws-secret-access-key:
+    required: true
+  aws-s3-bucket:
+    required: true
+  
+runs:
+  using: "docker"
+  image: "Dockerfile"
