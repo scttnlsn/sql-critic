@@ -1,6 +1,6 @@
 # sql-critic
 
-![CI](https://github.com/scttnlsn/sql-critic/actions/workflows/ci.yml/badge.svg)
+![CI status](https://github.com/scttnlsn/sql-critic/actions/workflows/ci.yml/badge.svg)
 
 Capture and analyze SQL queries made during a run your app's test suite.
 
@@ -76,3 +76,12 @@ When dependencies are updated in `pyproject.toml` then we need to regenerate `re
 (which is used for the GitHub action):
 
 `pip-compile -o requirements.txt pyproject.toml`
+
+#### Releasing
+
+```
+pip install build twine
+python -m build
+twine check dist/*
+twine upload dist/*
+```

@@ -1,5 +1,6 @@
 .venv
 *.pyc
 __pycache__
-sqlcritic.egg-info
 build
+dist
+sqlcritic.egg-info
