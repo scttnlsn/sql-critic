@@ -18,12 +18,13 @@ def main():
     print(f"::debug::results_data={results_data}")
 
     current_sha = os.environ["GITHUB_SHA"]
-    storage = Storage(
-        aws_access_key_id=os.environ["INPUT_AWS-ACCESS-KEY-ID"],
-        aws_secret_access_key=os.environ["INPUT_AWS-SECRET-ACCESS-KEY"],
-        bucket=os.environ["INPUT_AWS-S3-BUCKET"],
-    )
-    storage.put(current_sha, results_data)
+
+    # storage = Storage(
+    #     aws_access_key_id=os.environ["INPUT_AWS-ACCESS-KEY-ID"],
+    #     aws_secret_access_key=os.environ["INPUT_AWS-SECRET-ACCESS-KEY"],
+    #     bucket=os.environ["INPUT_AWS-S3-BUCKET"],
+    # )
+    # storage.put(current_sha, results_data)
 
     if os.environ["GITHUB_EVENT_NAME"] == "pull_request":
         ref = os.environ["GITHUB_REF"].split("/")

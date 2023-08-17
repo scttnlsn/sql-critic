@@ -8,12 +8,12 @@ inputs:
   data-path:
     description: "The path to the JSON file containing the output of the SQL Critic query collector"
     required: true
-  aws-access-key-id:
-    required: true
-  aws-secret-access-key:
-    required: true
-  aws-s3-bucket:
-    required: true
+  # aws-access-key-id:
+  #   required: true
+  # aws-secret-access-key:
+  #   required: true
+  # aws-s3-bucket:
+  #   required: true
   
 runs:
   using: "docker"
