@@ -2,7 +2,7 @@
 
 ![CI status](https://github.com/scttnlsn/sql-critic/actions/workflows/ci.yml/badge.svg)
 
-Capture and analyze SQL queries made during a run your app's test suite.
+Capture and analyze SQL queries made during a run of your app's test suite.
 
 Receive feedback about dubious queries in a PR comment.
 
