@@ -3,8 +3,8 @@ from sqlcritic.storage import Storage
 
 def test_put_get(vcr_cassette):
     storage = Storage(
-        aws_access_key_id="test",
-        aws_secret_access_key="test",
+        access_key_id="test",
+        secret_access_key="test",
         bucket="sql-critic-demo",
     )
 
@@ -16,8 +16,8 @@ def test_put_get(vcr_cassette):
 
 def test_get_missing(vcr_cassette):
     storage = Storage(
-        aws_access_key_id="test",
-        aws_secret_access_key="test",
+        access_key_id="test",
+        secret_access_key="test",
         bucket="sql-critic-demo",
     )
 

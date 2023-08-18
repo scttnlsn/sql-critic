@@ -6,10 +6,10 @@ from botocore.exceptions import ClientError
 
 
 class Storage:
-    def __init__(self, aws_access_key_id: str, aws_secret_access_key: str, bucket: str):
+    def __init__(self, access_key_id: str, secret_access_key: str, bucket: str):
         self.session = boto3.Session(
-            aws_access_key_id=aws_access_key_id,
-            aws_secret_access_key=aws_secret_access_key,
+            aws_access_key_id=access_key_id,
+            aws_secret_access_key=secret_access_key,
         )
         self.bucket = bucket
         self.s3 = self.session.resource("s3")

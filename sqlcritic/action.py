@@ -1,10 +1,13 @@
+import json
 import os
 from dataclasses import dataclass
 from functools import cached_property
 from typing import Optional
 
-from sqlcritic.analyze import analyze_path
+from sqlcritic.analyze import Span, Spans, analyze
 from sqlcritic.notify import GitHubNotifier
+from sqlcritic.storage import Storage
+from sqlcritic.trace import load_data, parse_spans
 
 
 @dataclass(frozen=True)
@@ -12,6 +15,9 @@ class Config:
     # inputs
     data_path: str
     repo_token: str
+    aws_access_key_id: str
+    aws_secret_access_key: str
+    aws_s3_bucket: str
 
     # other env vars
     event_name: str
@@ -28,8 +34,18 @@ class Config:
 
 
 def run(config: Config):
+    data = load_data(config.data_path)
+
+    storage = Storage(
+        access_key_id=config.aws_access_key_id,
+        secret_access_key=config.aws_secret_access_key,
+        bucket=config.aws_s3_bucket,
+    )
+    storage.put(config.sha, data)
+
     if config.pr_number is not None:
-        results = analyze_path(config.data_path)
+        spans = parse_spans(data)
+        results = analyze(spans)
         notifier = GitHubNotifier(config.repo, config.pr_number, config.repo_token)
         notifier.notify(results)
 
@@ -41,6 +57,9 @@ if __name__ == "__main__":
     config = Config(
         data_path=os.environ["INPUT_DATA-PATH"],
         repo_token=os.environ["INPUT_REPO-TOKEN"],
+        aws_access_key_id=os.environ["INPUT_AWS-ACCESS-KEY-ID"],
+        aws_secret_access_key=os.environ["INPUT_AWS-SECRET-ACCESS-KEY"],
+        aws_s3_bucket=os.environ["INPUT_AWS-S3-BUCKET"],
         event_name=os.environ["GITHUB_EVENT_NAME"],
         sha=os.environ["GITHUB_SHA"],
         ref=os.environ["GITHUB_REF"],

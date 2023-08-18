@@ -9,6 +9,12 @@ from typing import List, Set
 from sqlcritic.trace import Span, Spans, Test
 
 
+def fingerprint(*items: List[str]) -> str:
+    hashes = [hashlib.sha1(item.encode("utf-8")).hexdigest() for item in items]
+    combined = "-".join(hashes)
+    return hashlib.sha1(combined.encode("utf-8")).hexdigest()
+
+
 class AnalysisType(Enum):
     N_PLUS_ONE = "N_PLUS_ONE"
 
@@ -20,6 +26,10 @@ class AnalysisResult:
     queries: List[str]
     # the set of tests which lead to this result
     tests: Set[Test]
+
+    @property
+    def fingerprint(self):
+        return fingerprint(self.analysis_type.value, *self.queries)
 
 
 class Analyzer(ABC):
@@ -88,9 +98,7 @@ class NPlusOneAnalyzer(Analyzer):
             self._save_result()
 
     def _fingerprint(self):
-        source_hash = hashlib.sha1(self._source_sql.encode("utf-8")).hexdigest()
-        n_hash = hashlib.sha1(self._n_sql.encode("utf-8")).hexdigest()
-        return hashlib.sha1(f"{source_hash}-{n_hash}".encode("utf-8")).hexdigest()
+        return fingerprint(self._source_sql, self._n_sql)
 
     def _reset(self, span: Span):
         if len(self._n_spans) > 1:
@@ -136,16 +144,3 @@ analyzers = [
 def analyze(spans: Spans) -> Iterator[AnalysisResult]:
     for analyzer in analyzers:
         yield from analyzer(spans).analyze()
-
-
-def load_spans(path: str) -> Spans:
-    span_data = None
-    with open(path) as f:
-        span_data = json.loads(f.read())
-
-    return Spans((Span.parse(item) for item in span_data))
-
-
-def analyze_path(path: str) -> Iterator[AnalysisResult]:
-    spans = load_spans(path)
-    return analyze(spans)

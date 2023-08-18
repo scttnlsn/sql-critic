@@ -1,7 +1,8 @@
+import json
 from collections.abc import Iterator
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 from dateutil import parser as dateparser
 
@@ -52,3 +53,12 @@ class Test:
     path: str
     line: int
     name: str
+
+
+def load_data(path: str) -> List[dict]:
+    with open(path) as f:
+        return json.load(f)
+
+
+def parse_spans(data: List[dict]) -> Spans:
+    return Spans([Span.parse(item) for item in data])
