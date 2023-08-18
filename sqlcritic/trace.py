@@ -1,7 +1,7 @@
 from collections.abc import Iterator
 from dataclasses import dataclass
 from datetime import datetime
-from functools import cached_property
+from dateutil import parser as dateparser
 from typing import Dict, Optional
 
 
@@ -23,8 +23,8 @@ class Span:
             span_id=data["context"]["span_id"],
             parent_id=data["parent_id"],
             attributes=data["attributes"],
-            start_time=datetime.fromisoformat(data["start_time"]),
-            end_time=datetime.fromisoformat(data["end_time"]),
+            start_time=dateparser.parse(data["start_time"]),
+            end_time=dateparser.parse(data["end_time"]),
         )
 
     def __hash__(self):
