@@ -64,9 +64,11 @@ class GitHubNotifier(Notifier):
 
         for result in results:
             if result.analysis_type == AnalysisType.N_PLUS_ONE:
-                lines.append("* Potential N+1 detected")
-                lines.append(f"  - Source query: `{result.queries[0]}`")
-                lines.append(f"  - N query: `{result.queries[1]}`")
+                lines.append(f"* Potential N+1 detected")
+                lines.append(f"  - N query:")
+                lines.append(f"    `{result.queries[1]}`")
+                lines.append(f"  - Source query:")
+                lines.append(f"    `{result.queries[0]}`")
                 lines.append(f"  - Executed from:")
                 for test in sorted(result.tests):
                     test_label = f"{test.path}::{test.name}"

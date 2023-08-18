@@ -1,7 +1,7 @@
 import json
 import os
 
-from sqlcritic.analyze import analyze, Span, Spans
+from sqlcritic.analyze import Span, Spans, analyze
 from sqlcritic.notify import GitHubNotifier
 from sqlcritic.storage import Storage
 

@@ -30,8 +30,10 @@ def test_github_notify(mocker):
     leave_comment.assert_called_once_with(
         [
             "* Potential N+1 detected",
-            '  - Source query: `SELECT "demo_entry"."id", "demo_entry"."author_id", "demo_entry"."content", "demo_entry"."published_at" FROM "demo_entry" ORDER BY "demo_entry"."published_at" DESC`',
-            '  - N query: `SELECT "demo_author"."id", "demo_author"."name" FROM "demo_author" WHERE "demo_author"."id" = %s LIMIT 21`',
+            "  - N query:",
+            '    `SELECT "demo_author"."id", "demo_author"."name" FROM "demo_author" WHERE "demo_author"."id" = %s LIMIT 21`',
+            "  - Source query:",
+            '    `SELECT "demo_entry"."id", "demo_entry"."author_id", "demo_entry"."content", "demo_entry"."published_at" FROM "demo_entry" ORDER BY "demo_entry"."published_at" DESC`',
             "  - Executed from:",
             "    * `tests/test_entries.py::test_entries` (line 9)",
             "    * `tests/test_entries.py::test_entries_other` (line 30)",

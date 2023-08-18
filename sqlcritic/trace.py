@@ -1,8 +1,9 @@
 from collections.abc import Iterator
 from dataclasses import dataclass
 from datetime import datetime
-from dateutil import parser as dateparser
 from typing import Dict, Optional
+
+from dateutil import parser as dateparser
 
 
 @dataclass
@@ -34,10 +35,7 @@ class Span:
 class Spans:
     def __init__(self, spans: Iterator[Span]):
         self.spans = set(spans)
-        self.index = {
-            span.span_id: span
-            for span in self.spans
-        }
+        self.index = {span.span_id: span for span in self.spans}
 
     def __iter__(self):
         yield from self.spans
