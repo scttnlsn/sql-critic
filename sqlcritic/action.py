@@ -14,6 +14,7 @@ def main():
     span_data = None
     with open(data_path) as f:
         span_data = json.loads(f.read())
+    print(f"::debug::span_data={span_data}")
 
     current_sha = os.environ["GITHUB_SHA"]
 
