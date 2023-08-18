@@ -138,10 +138,14 @@ def analyze(spans: Spans) -> Iterator[AnalysisResult]:
         yield from analyzer(spans).analyze()
 
 
-def analyze_path(data_path: str) -> Iterator[AnalysisResult]:
+def load_spans(path: str) -> Spans:
     span_data = None
-    with open(data_path) as f:
+    with open(path) as f:
         span_data = json.loads(f.read())
 
-    spans = Spans((Span.parse(item) for item in span_data))
+    return Spans((Span.parse(item) for item in span_data))
+
+
+def analyze_path(path: str) -> Iterator[AnalysisResult]:
+    spans = load_spans(path)
     return analyze(spans)

@@ -17,9 +17,11 @@ dependencies = [
 requires-python = ">=3.9"
 
 [project.optional-dependencies]
-dev = ["pytest", "pytest-mock"]
+dev = ["black", "isort", "pytest", "pytest-cov", "pytest-mock"]
 
 [tool.pytest.ini_options]
-pythonpath = [
-  ".",
-]
+addopts = "--cov=sqlcritic --cov-report=html --cov-report=term-missing"
+pythonpath = ["."]
+
+[tool.isort]
+profile = "black"

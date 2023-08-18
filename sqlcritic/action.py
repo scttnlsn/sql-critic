@@ -5,7 +5,6 @@ from typing import Optional
 
 from sqlcritic.analyze import analyze_path
 from sqlcritic.notify import GitHubNotifier
-from sqlcritic.storage import Storage
 
 
 @dataclass(frozen=True)

@@ -1,17 +1,12 @@
-import json
-
 import pytest
 
-from sqlcritic.analyze import AnalysisResult, AnalysisType, analyze
-from sqlcritic.trace import Span, Spans, Test
+from sqlcritic.analyze import AnalysisResult, AnalysisType, analyze, load_spans
+from sqlcritic.trace import Test
 
 
 @pytest.fixture
 def spans():
-    with open("tests/fixtures/test-spans.json") as f:
-        data = json.load(f)
-    spans = Spans((Span.parse(item) for item in data))
-    return spans
+    return load_spans("tests/fixtures/test-spans.json")
 
 
 def test_nplusone(spans):
