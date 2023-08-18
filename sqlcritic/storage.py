@@ -20,12 +20,12 @@ class Storage:
 
     def get(self, sha: str) -> Optional[dict]:
         try:
-            obj = self.s3.get_object(Bucket=self.bucket, Key=f"{sha}.json")
-            body = obj["Body"]
-            data = body.read()
-            return json.loads(data)
+            obj = self.s3.Object(self.bucket, f"{sha}.json")
+            res = obj.get()
+            return json.loads(res["Body"].read())
         except ClientError as err:
-            if err.response["Error"]["Code"] == "NoSuchKey":
+            err_code = err.response["Error"]["Code"]
+            if err_code == "NoSuchKey" or err_code == "AccessDenied":
                 return None
             else:
                 raise err

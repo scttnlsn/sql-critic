@@ -1,0 +1,46 @@
+interactions:
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4yOC4yOSBtZC9Cb3RvY29yZSMxLjMxLjI5IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjkuMTYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzEuMjkgUmVzb3VyY2U=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyMzA4MThUMTk1NjA4Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        NzEwODJlNGMtNDQ1Mi00NDcwLWE5YTctZjMwMTBjNzQzNDU5
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://sql-critic-demo.s3.amazonaws.com/missing-key.json
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>AccessDenied</Code><Message>Access Denied</Message><RequestId>5QYVT5661N0JPR0F</RequestId><HostId>QzvcsccK9T5gIpN3ikQRsAobugnYF++q/95vXx6l4HukOYGEzS326k9ql7ITXIM3gX4zMmweoL4=</HostId></Error>'
+    headers:
+      Content-Type:
+      - application/xml
+      Date:
+      - Fri, 18 Aug 2023 19:56:07 GMT
+      Server:
+      - AmazonS3
+      Transfer-Encoding:
+      - chunked
+      x-amz-id-2:
+      - QzvcsccK9T5gIpN3ikQRsAobugnYF++q/95vXx6l4HukOYGEzS326k9ql7ITXIM3gX4zMmweoL4=
+      x-amz-request-id:
+      - 5QYVT5661N0JPR0F
+    status:
+      code: 403
+      message: Forbidden
+version: 1

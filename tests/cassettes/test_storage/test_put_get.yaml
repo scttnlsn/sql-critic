@@ -1,0 +1,108 @@
+interactions:
+- request:
+    body: !!python/object/new:_io.BytesIO
+      state: !!python/tuple
+      - !!binary |
+        eyJmb28iOiAiYmFyIn0=
+      - 0
+      - null
+    headers:
+      Content-Length:
+      - '14'
+      Content-MD5:
+      - !!binary |
+        bENNc1c0L0pKeTl2YzZIamJyYVB6dz09
+      Expect:
+      - !!binary |
+        MTAwLWNvbnRpbnVl
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4yOC4yOSBtZC9Cb3RvY29yZSMxLjMxLjI5IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjkuMTYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzEuMjkgUmVzb3VyY2U=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        VU5TSUdORUQtUEFZTE9BRA==
+      X-Amz-Date:
+      - !!binary |
+        MjAyMzA4MThUMTk1NjA3Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        MWViMjczM2UtNTBmYS00ZmQxLWFiNTYtNTEzZTJjM2E2ZmM3
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: PUT
+    uri: https://sql-critic-demo.s3.amazonaws.com/testing.json
+  response:
+    body:
+      string: ''
+    headers:
+      Content-Length:
+      - '0'
+      Date:
+      - Fri, 18 Aug 2023 19:56:08 GMT
+      ETag:
+      - '"94232c5b8fc9272f6f73a1e36eb68fcf"'
+      Server:
+      - AmazonS3
+      x-amz-id-2:
+      - l6bwBbcEZ1L75oF+LVjYOjYo1eROYO7/xXUfviN635Bkp9HYmQCRONYsxkOLJyvyu08Yi8rpJ6Q=
+      x-amz-request-id:
+      - A2WS7G3TC1E9TC3C
+      x-amz-server-side-encryption:
+      - AES256
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - !!binary |
+        Qm90bzMvMS4yOC4yOSBtZC9Cb3RvY29yZSMxLjMxLjI5IHVhLzIuMCBvcy9tYWNvcyMyMi42LjAg
+        bWQvYXJjaCNhcm02NCBsYW5nL3B5dGhvbiMzLjkuMTYgbWQvcHlpbXBsI0NQeXRob24gY2ZnL3Jl
+        dHJ5LW1vZGUjbGVnYWN5IEJvdG9jb3JlLzEuMzEuMjkgUmVzb3VyY2U=
+      X-Amz-Content-SHA256:
+      - !!binary |
+        ZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3
+        ODUyYjg1NQ==
+      X-Amz-Date:
+      - !!binary |
+        MjAyMzA4MThUMTk1NjA3Wg==
+      amz-sdk-invocation-id:
+      - !!binary |
+        NjZjNDBlYTgtZTAxZC00ZDQyLWE5NDMtNDlmZWJmOTM4MzYw
+      amz-sdk-request:
+      - !!binary |
+        YXR0ZW1wdD0x
+    method: GET
+    uri: https://sql-critic-demo.s3.amazonaws.com/testing.json
+  response:
+    body:
+      string: '{"foo": "bar"}'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Content-Length:
+      - '14'
+      Content-Type:
+      - binary/octet-stream
+      Date:
+      - Fri, 18 Aug 2023 19:56:08 GMT
+      ETag:
+      - '"94232c5b8fc9272f6f73a1e36eb68fcf"'
+      Last-Modified:
+      - Fri, 18 Aug 2023 19:56:08 GMT
+      Server:
+      - AmazonS3
+      x-amz-id-2:
+      - wt+ancjw5i/S8btIXodsleW6lw94Zwse5BVVMUshtUgCALUE4Szg9D8QO4d2I3O37hPvzaqi//8=
+      x-amz-request-id:
+      - A2WMM6PWQ70G4NYM
+      x-amz-server-side-encryption:
+      - AES256
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -17,7 +17,7 @@ dependencies = [
 requires-python = ">=3.9"
 
 [project.optional-dependencies]
-dev = ["black", "isort", "pytest", "pytest-cov", "pytest-mock"]
+dev = ["black", "isort", "pytest", "pytest-cov", "pytest-mock", "vcrpy"]
 
 [tool.pytest.ini_options]
 addopts = "--cov=sqlcritic --cov-report=html --cov-report=term-missing"
