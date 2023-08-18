@@ -1,4 +1,5 @@
 import hashlib
+import json
 from abc import ABC, abstractmethod
 from collections.abc import Iterator
 from dataclasses import dataclass
@@ -135,3 +136,12 @@ analyzers = [
 def analyze(spans: Spans) -> Iterator[AnalysisResult]:
     for analyzer in analyzers:
         yield from analyzer(spans).analyze()
+
+
+def analyze_path(data_path: str) -> Iterator[AnalysisResult]:
+    span_data = None
+    with open(data_path) as f:
+        span_data = json.loads(f.read())
+
+    spans = Spans((Span.parse(item) for item in span_data))
+    return analyze(spans)

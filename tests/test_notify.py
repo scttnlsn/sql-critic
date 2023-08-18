@@ -22,29 +22,39 @@ def test_github_notify(mocker):
         )
     ]
 
-    leave_comment = mocker.patch("sqlcritic.notify.GitHubNotifier._leave_comment")
+    comment = mocker.patch("sqlcritic.notify.GitHubNotifier.comment")
 
     notifier = GitHubNotifier("someowner/somerepo", 123, "faketoken")
     notifier.notify(results)
 
-    leave_comment.assert_called_once_with(
+    comment.assert_called_once_with(
         [
-            "* Potential N+1 detected",
-            "  - N query:",
-            '    `SELECT "demo_author"."id", "demo_author"."name" FROM "demo_author" WHERE "demo_author"."id" = %s LIMIT 21`',
-            "  - Source query:",
-            '    `SELECT "demo_entry"."id", "demo_entry"."author_id", "demo_entry"."content", "demo_entry"."published_at" FROM "demo_entry" ORDER BY "demo_entry"."published_at" DESC`',
-            "  - Executed from:",
-            "    * `tests/test_entries.py::test_entries` (line 9)",
-            "    * `tests/test_entries.py::test_entries_other` (line 30)",
+            "**Potential N+1 query detected**",
+            "```sql",
+            "--- source query",
+            'SELECT "demo_entry"."id", "demo_entry"."author_id", "demo_entry"."content", "demo_entry"."published_at" FROM "demo_entry" ORDER BY "demo_entry"."published_at" DESC',
+            "--- N query",
+            'SELECT "demo_author"."id", "demo_author"."name" FROM "demo_author" WHERE "demo_author"."id" = %s LIMIT 21',
+            "```",
+            "Executed from:",
+            "* `tests/test_entries.py::test_entries` (line 9)",
+            "* `tests/test_entries.py::test_entries_other` (line 30)",
+            "---",
+            "*Comment made by [sql-critic](https://github.com/scttnlsn/sql-critic)*",
         ]
     )
 
 
 def test_github_notify_empty(mocker):
-    leave_comment = mocker.patch("sqlcritic.notify.GitHubNotifier._leave_comment")
+    comment = mocker.patch("sqlcritic.notify.GitHubNotifier.comment")
 
     notifier = GitHubNotifier("someowner/somerepo", 123, "faketoken")
     notifier.notify([])
 
-    leave_comment.assert_called_once_with(["No issues detected!"])
+    comment.assert_called_once_with(
+        [
+            "No issues detected!",
+            "---",
+            "*Comment made by [sql-critic](https://github.com/scttnlsn/sql-critic)*",
+        ]
+    )

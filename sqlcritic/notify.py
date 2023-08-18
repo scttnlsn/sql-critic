@@ -39,10 +39,10 @@ class GitHubNotifier(Notifier):
         return self.repo.get_issue(self.pr_number)
 
     def notify(self, results: Iterator[AnalysisResult]):
-        comment_lines = self._format_comment(results)
-        self._leave_comment(comment_lines)
+        lines = self.format(results)
+        self.comment(lines)
 
-    def _leave_comment(self, lines: List[str]):
+    def comment(self, lines: List[str]):
         content = "\n".join(lines)
         comment_body = f"{content}\n\n{self.comment_marker}"
 
@@ -59,22 +59,34 @@ class GitHubNotifier(Notifier):
         else:
             self.issue.create_comment(comment_body)
 
-    def _format_comment(self, results: Iterator[AnalysisResult]) -> List[str]:
+    def format(self, results: Iterator[AnalysisResult]) -> List[str]:
         lines = []
 
         for result in results:
             if result.analysis_type == AnalysisType.N_PLUS_ONE:
-                lines.append(f"* Potential N+1 detected")
-                lines.append(f"  - N query:")
-                lines.append(f"    `{result.queries[1]}`")
-                lines.append(f"  - Source query:")
-                lines.append(f"    `{result.queries[0]}`")
-                lines.append(f"  - Executed from:")
+                lines += [
+                    "**Potential N+1 query detected**",
+                    "```sql",
+                    "--- source query",
+                    result.queries[0],
+                    "--- N query",
+                    result.queries[1],
+                    "```",
+                    "Executed from:",
+                ]
                 for test in sorted(result.tests):
                     test_label = f"{test.path}::{test.name}"
-                    lines.append(f"    * `{test_label}` (line {test.line})")
+                    lines.append(f"* `{test_label}` (line {test.line})")
+            lines.append("---")
 
         if len(lines) == 0:
-            lines = ["No issues detected!"]
+            lines = [
+                "No issues detected!",
+                "---",
+            ]
+
+        lines.append(
+            "*Comment made by [sql-critic](https://github.com/scttnlsn/sql-critic)*"
+        )
 
         return lines
