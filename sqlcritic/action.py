@@ -1,8 +1,7 @@
 import json
 import os
 
-from sqlcritic.analyze import analyze
-from sqlcritic.collector import Test
+from sqlcritic.analyze import analyze, Span, Spans
 from sqlcritic.notify import GitHubNotifier
 from sqlcritic.storage import Storage
 
@@ -12,10 +11,9 @@ def main():
     print(f"::debug::{env}")
 
     data_path = os.environ["INPUT_DATA-PATH"]
-    results_data = None
+    span_data = None
     with open(data_path) as f:
-        results_data = json.loads(f.read())
-    print(f"::debug::results_data={results_data}")
+        span_data = json.loads(f.read())
 
     current_sha = os.environ["GITHUB_SHA"]
 
@@ -36,10 +34,10 @@ def main():
         repo_slug = os.environ["GITHUB_REPOSITORY"]
         token = os.environ["INPUT_REPO-TOKEN"]
 
-        tests = [Test.from_dict(test_data) for test_data in results_data["results"]]
-        report = analyze(tests)
+        spans = Spans((Span.parse(item) for item in span_data))
+        results = analyze(spans)
         notifier = GitHubNotifier(repo_slug, pr_number, token)
-        notifier.notify(report)
+        notifier.notify(results)
 
 
 if __name__ == "__main__":
