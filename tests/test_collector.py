@@ -1,7 +1,7 @@
-from sqlcritic.collector import Collector, Query, StackTrace, Test
+from sqlcritic.collector import Collector
 
 
-def test_collect_queries():
+def test_collector():
     collector = Collector()
 
     with collector.trace_test("example.py", 123, "test_example"):
@@ -15,15 +15,19 @@ def test_collect_queries():
 
     results = list(collector.results())
 
-    assert len(results) == 1
-    test = results[0]
-    assert test.path == "example.py"
-    assert test.line == 123
-    assert test.name == "test_example"
-    assert len(test.queries) == 2
-    query = test.queries[0]
-    assert query.sql == "select * from foo;"
-    assert query.stack_trace
-    query = test.queries[1]
-    assert query.sql == "select * from bar;"
-    assert query.stack_trace
+    assert len(results) == 4
+    result = results[0]
+    assert result["name"] == "fake_db_span_1"
+    assert result["attributes"]["db.name"] == "example"
+    assert result["attributes"]["db.statement"] == "select * from foo;"
+    result = results[1]
+    assert result["name"] == "fake_db_span_2"
+    assert result["attributes"]["db.name"] == "example"
+    assert result["attributes"]["db.statement"] == "select * from bar;"
+    result = results[2]
+    assert result["name"] == "some_intermediate_span"
+    result = results[3]
+    assert result["name"] == "test"
+    assert result["attributes"]["test.path"] == "example.py"
+    assert result["attributes"]["test.line"] == 123
+    assert result["attributes"]["test.name"] == "test_example"

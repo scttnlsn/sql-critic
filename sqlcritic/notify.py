@@ -6,12 +6,12 @@ from github import Auth, Github
 from github.Issue import Issue
 from github.Repository import Repository
 
-from .analyze import TestReport
+from .analyze import AnalysisResult, AnalysisType
 
 
 class Notifier(ABC):
     @abstractmethod
-    def notify(self, report: Iterator[TestReport]):
+    def notify(self, report: Iterator[AnalysisResult]):
         raise NotImplementedError()
 
 
@@ -38,8 +38,8 @@ class GitHubNotifier(Notifier):
         # for use w/ commenting
         return self.repo.get_issue(self.pr_number)
 
-    def notify(self, report: Iterator[TestReport]):
-        comment_lines = self._format_comment(report)
+    def notify(self, results: Iterator[AnalysisResult]):
+        comment_lines = self._format_comment(results)
         self._leave_comment(comment_lines)
 
     def _leave_comment(self, lines: List[str]):
@@ -59,17 +59,18 @@ class GitHubNotifier(Notifier):
         else:
             self.issue.create_comment(comment_body)
 
-    def _format_comment(self, report: Iterator[TestReport]) -> List[str]:
+    def _format_comment(self, results: Iterator[AnalysisResult]) -> List[str]:
         lines = []
 
-        for test_report in report:
-            test_label = f"{test_report.test.path}::{test_report.test.name}"
-            # TODO: link label to file at this commit
-            lines.append(f"* `{test_label}` (line {test_report.test.line})")
-            for analysis_result in test_report.analysis_results:
-                lines.append(
-                    f"  - {analysis_result.message}: `{analysis_result.query}`"
-                )
+        for result in results:
+            if result.analysis_type == AnalysisType.N_PLUS_ONE:
+                lines.append("* Potential N+1 detected")
+                lines.append(f"  - Source query: `{result.queries[0]}`")
+                lines.append(f"  - N query: `{result.queries[1]}`")
+                lines.append(f"  - Executed from:")
+                for test in sorted(result.tests):
+                    test_label = f"{test.path}::{test.name}"
+                    lines.append(f"    * `{test_label}` (line {test.line})")
 
         if len(lines) == 0:
             lines = ["No issues detected!"]

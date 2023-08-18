@@ -1,50 +1,130 @@
+import hashlib
 from abc import ABC, abstractmethod
 from collections.abc import Iterator
 from dataclasses import dataclass
-from typing import List
+from enum import Enum
+from typing import List, Set
 
-from sqlcritic.collector import Query, Test
+from sqlcritic.trace import Span, Spans, Test
+
+
+class AnalysisType(Enum):
+    N_PLUS_ONE = "N_PLUS_ONE"
 
 
 @dataclass
 class AnalysisResult:
-    query: str
-    message: str
-
-
-@dataclass
-class TestReport:
-    __test__ = False
-
-    test: Test
-    analysis_results: Iterator[AnalysisResult]
+    analysis_type: AnalysisType
+    # list of relevant queries (context depends on analysis type)
+    queries: List[str]
+    # the set of tests which lead to this result
+    tests: Set[Test]
 
 
 class Analyzer(ABC):
+    def __init__(self, spans: Spans):
+        self.spans = spans
+        self.results = {}
+
+    def analyze(self) -> List[AnalysisResult]:
+        spans = sorted(self.spans, key=lambda span: span.start_time)
+        for span in spans:
+            self.visit(span)
+        self.finish()
+        return list(self.results.values())
+
     @abstractmethod
-    def analyze(self, queries: List[str]) -> Iterator[AnalysisResult]:
-        raise NotImplementedError()
+    def visit(self, span: Span):
+        pass
+
+    def finish(self):
+        pass
 
 
 class NPlusOneAnalyzer(Analyzer):
-    def analyze(self, queries: List[Query]) -> Iterator[AnalysisResult]:
-        last_query = None
-        detected = False
-        for info in queries:
-            query = info.sql
-            if query.lower().startswith("select"):
-                if query == last_query:
-                    detected = True
-                elif detected:
-                    detected = False
-                    yield self._result(last_query)
-            last_query = query
+    def __init__(self, spans: Spans):
+        super().__init__(spans)
+        self._source_span = None
+        self._source_sql = None
+        self._n_spans = []
+        self._n_sql = None
+        self.results = {}
 
-        if detected:
-            yield self._result(last_query)
+    def visit(self, span: Span):
+        if (
+            "db.statement" in span.attributes
+            and span.name == "SELECT"
+            and span.parent_id is not None
+        ):
+            # this is a db query span
+            sql = span.attributes["db.statement"]
 
-    def _result(self, query: str) -> AnalysisResult:
-        return AnalysisResult(query=query, message="Potential N+1 detected")
+            if self._source_span is None:
+                # searching for the N+1 - maybe this span is the source that triggered it
+                self._reset(span)
+                return
+
+            if span.parent_id != self._source_span.parent_id:
+                # we have a new parent now, reset the detection
+                self._reset(span)
+                return
+
+            if sql == self._source_sql:
+                self._reset(span)
+                return
+
+            if self._n_sql is None or sql == self._n_sql:
+                # we have a potential source and this is now a different query
+                # with the same parent - maybe there's N of them
+                self._n_sql = sql
+                self._n_spans.append(span)
+                return
+
+            self._reset(span)
+
+    def finish(self):
+        if len(self._n_spans) > 1:
+            self._save_result()
+
+    def _fingerprint(self):
+        source_hash = hashlib.sha1(self._source_sql.encode("utf-8")).hexdigest()
+        n_hash = hashlib.sha1(self._n_sql.encode("utf-8")).hexdigest()
+        return hashlib.sha1(f"{source_hash}-{n_hash}".encode("utf-8")).hexdigest()
+
+    def _reset(self, span: Span):
+        if len(self._n_spans) > 1:
+            self._save_result()
+        self._source_span = span
+        self._source_sql = span.attributes["db.statement"]
+        self._n_spans = []
+        self._n_sql = None
+
+    def _test_info(self, span: Span) -> Test:
+        parent_span = None
+        while True:
+            parent_span = self.spans.parent_span(span)
+            if parent_span is None:
+                # we've traversed to the root span
+                raise ValueError("span did not originate from a test")
+
+            if "test.name" in parent_span.attributes:
+                return Test(
+                    path=parent_span.attributes["test.path"],
+                    line=parent_span.attributes["test.line"],
+                    name=parent_span.attributes["test.name"],
+                )
+
+            span = parent_span
+
+    def _save_result(self):
+        fingerprint = self._fingerprint()
+        if fingerprint not in self.results:
+            self.results[fingerprint] = AnalysisResult(
+                analysis_type=AnalysisType.N_PLUS_ONE,
+                queries=[self._source_sql, self._n_sql],
+                tests=set(),
+            )
+        self.results[fingerprint].tests.add(self._test_info(self._source_span))
 
 
 analyzers = [
@@ -52,16 +132,6 @@ analyzers = [
 ]
 
 
-def analyze(tests: Iterator[Test]) -> Iterator[TestReport]:
-    for test in tests:
-        analysis_results = [
-            result
-            for analyzer in analyzers
-            for result in analyzer().analyze(test.queries)
-        ]
-
-        if len(analysis_results) > 0:
-            yield TestReport(
-                test=test,
-                analysis_results=analysis_results,
-            )
+def analyze(spans: Spans) -> Iterator[AnalysisResult]:
+    for analyzer in analyzers:
+        yield from analyzer(spans).analyze()
