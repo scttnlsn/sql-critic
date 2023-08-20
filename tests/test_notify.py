@@ -55,6 +55,7 @@ def test_github_notify_empty(mocker):
     comment.assert_called_once_with(
         [
             "No issues detected!",
+            "",
             "---",
             "*Comment made by [sql-critic](https://github.com/scttnlsn/sql-critic)*",
         ]
