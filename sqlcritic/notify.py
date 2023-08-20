@@ -43,6 +43,7 @@ class GitHubNotifier(Notifier):
         if len(lines) == 0:
             lines = [
                 "No issues detected!",
+                "",
                 "---",
             ]
 

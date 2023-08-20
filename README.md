@@ -81,7 +81,5 @@ When dependencies are updated in `pyproject.toml` then we need to regenerate `re
 
 ```
 pip install build twine
-python -m build
-twine check dist/*
-twine upload dist/*
+make publish
 ```
