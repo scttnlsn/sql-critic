@@ -1,9 +1,18 @@
 import json
+from unittest.mock import PropertyMock
 
 from sqlcritic.action import Config, run
 from sqlcritic.analyze import analyze
+from sqlcritic.github import Pull
 from sqlcritic.notify import GitHubNotifier
 from sqlcritic.trace import load_data, parse_spans
+
+
+def mock_storage_get(key: str):
+    if key == "test-base-sha":
+        return load_data("tests/fixtures/test-spans-base.json")
+    elif key == "test-head-sha":
+        return load_data("tests/fixtures/test-spans.json")
 
 
 def test_run(tmp_path, mocker):
@@ -24,18 +33,31 @@ def test_run(tmp_path, mocker):
         repo="foo/bar",
     )
 
-    comment = mocker.patch("sqlcritic.notify.GitHubNotifier.comment")
+    mocker.patch(
+        "sqlcritic.github.Pull.base_sha",
+        return_value="test-base-sha",
+        new_callable=PropertyMock,
+    )
+    mocker.patch(
+        "sqlcritic.github.Pull.head_sha",
+        return_value="test-head-sha",
+        new_callable=PropertyMock,
+    )
+
+    storage_get = mocker.patch("sqlcritic.storage.Storage.get")
+    storage_get.side_effect = mock_storage_get
     storage_put = mocker.patch("sqlcritic.storage.Storage.put")
+    comment = mocker.patch("sqlcritic.github.Pull.comment")
 
     run(config)
 
-    notifier = GitHubNotifier(config.repo, 1, "test-repo-token")
+    notifier = GitHubNotifier(None)
     spans = parse_spans(data)
     results = analyze(spans)
     lines = notifier.format(results)
 
-    comment.assert_called_once_with(lines)
     storage_put.assert_called_once_with(config.sha, data)
+    comment.assert_called_once_with(lines)
 
 
 def test_run_no_pull(tmp_path, mocker):
@@ -56,8 +78,8 @@ def test_run_no_pull(tmp_path, mocker):
         repo="foo/bar",
     )
 
-    comment = mocker.patch("sqlcritic.notify.GitHubNotifier.comment")
     storage_put = mocker.patch("sqlcritic.storage.Storage.put")
+    comment = mocker.patch("sqlcritic.github.Pull.comment")
 
     run(config)
 

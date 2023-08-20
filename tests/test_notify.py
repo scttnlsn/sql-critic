@@ -1,4 +1,5 @@
 from sqlcritic.analyze import AnalysisResult, AnalysisType
+from sqlcritic.github import Pull
 from sqlcritic.notify import GitHubNotifier
 from sqlcritic.trace import Test
 
@@ -22,9 +23,9 @@ def test_github_notify(mocker):
         )
     ]
 
-    comment = mocker.patch("sqlcritic.notify.GitHubNotifier.comment")
+    comment = mocker.patch("sqlcritic.github.Pull.comment")
 
-    notifier = GitHubNotifier("someowner/somerepo", 123, "faketoken")
+    notifier = GitHubNotifier(Pull("someowner/somerepo", "faketoken", 123))
     notifier.notify(results)
 
     comment.assert_called_once_with(
@@ -46,9 +47,9 @@ def test_github_notify(mocker):
 
 
 def test_github_notify_empty(mocker):
-    comment = mocker.patch("sqlcritic.notify.GitHubNotifier.comment")
+    comment = mocker.patch("sqlcritic.github.Pull.comment")
 
-    notifier = GitHubNotifier("someowner/somerepo", 123, "faketoken")
+    notifier = GitHubNotifier(Pull("someowner/somerepo", "faketoken", 123))
     notifier.notify([])
 
     comment.assert_called_once_with(

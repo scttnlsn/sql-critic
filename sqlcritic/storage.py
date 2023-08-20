@@ -14,13 +14,13 @@ class Storage:
         self.bucket = bucket
         self.s3 = self.session.resource("s3")
 
-    def put(self, sha: str, data: dict):
-        obj = self.s3.Object(self.bucket, f"{sha}.json")
+    def put(self, key: str, data: dict):
+        obj = self.s3.Object(self.bucket, f"{key}.json")
         obj.put(Body=json.dumps(data))
 
-    def get(self, sha: str) -> Optional[dict]:
+    def get(self, key: str) -> Optional[dict]:
         try:
-            obj = self.s3.Object(self.bucket, f"{sha}.json")
+            obj = self.s3.Object(self.bucket, f"{key}.json")
             res = obj.get()
             return json.loads(res["Body"].read())
         except ClientError as err:

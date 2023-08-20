@@ -1,0 +1,706 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PyGithub/Python
+    method: GET
+    uri: https://api.github.com/repos/scttnlsn/sql-critic-demo
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA62YbW/bNhDHv4vezrHsPMdA0L3Im2FYuw5tUWwYBEqiJTYSqZKUPUfId9+fpJ7s
+        ppFd9k0iU7yfjsc78u6agKXB6vrm7vbqanF5Mwu4SGlkxoK/osfs4d3vv31++G8b4AUpKUbV1+Is
+        kUyz5CylpcCLdV0UUfc20ZoXioffTqsk2xANhJY1nQViy6kMVk1QiIxxA25FQTSfv7q5vby8Huvz
+        x8P760+f3xbJl48X7x7eL95m9/eYTEAlMqplAUiudaVWYegG1TxjOq/jWlGZCK4p1/NElGEdOvqb
+        zf0lCJlsGXbZGDhgVazlOGHAVDjSNtdlcfB591k7fTRxLYpCbCF9qOxrHwh7KWNqS2A8+wECpJpQ
+        6JzCVljCs1k4U/o0ZaxEE5p/cBLDUDC+pOlJCrUyUMc4wXMTSloJC6tjBeeqNBP8NMX2JEESMiOc
+        PZHTSZBUABiVTlPBSkCSbuBnp4k6kSa0MZLsjCkkTSjbwLA/gDuQBU3vKhO8H7HxxsxM04ikpYm7
+        NSkUfZ4hco7x4hfiOqX9lgUrjrPAuKl8bMkTwWRt1sfIC3SDmrDl6wzEDwhY9CPd+YEMoAnxt/X8
+        BMFIYiGJFlMhPaHiHqkJxz+NK2hKSj/VLQGkXAhPa1oCSEypmh7lmxNrtyAVdhHA6zJ2h9Mxfj/B
+        dghoS5RiGafUz4o9pQm7EzSWhCe5J7eDNKF7sntOMj9lDQCcuBCxHwh3WWgpTahy4q4NHXnrZ7AG
+        skeVdO2vrIH0VC19d90qaig9E9eXhgP4adpBwqa1akF4VpPME9tTzDGPqzkjT5MJx0QUDRgwTRol
+        WVz/hDNvABld3c2P2Pc068AZqDafeD1DmbLBKDGxVihLNnXHTyBbxp7//wyu8ddDtvk9nZQcobCB
+        NOFwSLtroMV7Wbi9BzpNxx9pU3c/x+ggYfNLRXRuzjF8qyKSeqndMsImJkij5vN5k1NiE+OSSt9g
+        dgiwiExyJINemjYdBAlRSbTNutdG0RRZeCFI6mffngKi20svbR1i7AUVUks/FS1hjCxZQZUW3PPM
+        HTBjOBearVlyTAUyEXh7pOaNYjyhM4JEG96LOpzBn1Hcma1EPko9jeQQWAjKfVeHFBSu7Wd5SR2k
+        CV3RmNKqEDv/I2nEMfEsKRoMaUQ0Sp3zxfnF2eL2bHnzYXm3Wi5Xl3d/Y05dpd+dc7VaLsycqlb5
+        N5jbD+eL1fnd6uLKTMEh27o3ntBveKHgPyxmTA8Bkkrlg+Svg9yqaxR8Ry4p4KcHIXXCVzeH998R
+        stA2FyWtkJR0lZ1iT3hGW2aUWySi5rD4YhZsiUYyjBt8GOryEezInzudC26gREUuvrtmkBmppPhC
+        E63GY8Oh0naNzMQte2R9dWklTda0N5IyldTI+dFF6MddJTloVjIpRds3cmVre0CiCWSLYpyMTJG4
+        oMOAqChvVe/WuETUsYRy1dsIkSm2kfkcorJbDVORpmVV2A5Yi9/SGBSTSUSmPBHrdSTp15qhndLP
+        0aJiCRbxz7+zYMMUi1nB9A7W7NpprtrGDNh/pF6wgmLdftiXKV2TutCRqzFAKAnqf3g7lSV2w9mq
+        Cdq2gGvSmSnaTGvNbyKje0YaaB3DzTRnq3tGL4FTvcXyR24wTu/aLVg+/w9noxQ8fBQAAA==
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes,
+        X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO,
+        X-GitHub-Request-Id, Deprecation, Sunset
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - default-src 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 20 Aug 2023 13:10:06 GMT
+      ETag:
+      - W/"bb2a0390368e746669b977994e521b39a488ae52645de61842d481ec0b79738c"
+      Last-Modified:
+      - Thu, 17 Aug 2023 19:15:10 GMT
+      Referrer-Policy:
+      - origin-when-cross-origin, strict-origin-when-cross-origin
+      Server:
+      - GitHub.com
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding, Accept, X-Requested-With
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-GitHub-Media-Type:
+      - github.v3; format=json
+      X-GitHub-Request-Id:
+      - D3A9:17FC:30BE45:651C29:64E210AE
+      X-RateLimit-Limit:
+      - '5000'
+      X-RateLimit-Remaining:
+      - '4993'
+      X-RateLimit-Reset:
+      - '1692540307'
+      X-RateLimit-Resource:
+      - core
+      X-RateLimit-Used:
+      - '7'
+      X-XSS-Protection:
+      - '0'
+      github-authentication-token-expiration:
+      - 2023-11-18 09:09:55 -0500
+      x-accepted-github-permissions:
+      - metadata=read
+      x-github-api-version-selected:
+      - '2022-11-28'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PyGithub/Python
+    method: GET
+    uri: https://api.github.com/repos/scttnlsn/sql-critic-demo/issues/2
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA62WXU/bMBSG/0tuR0mattBFQrvpLqZpdCC2sU1T5CZu4uHYwXbKuoj/vtfOB7Ro
+        QAtXaZ1zHh+/58OpvUpxL/JyY0od+T4p2WHGTF4tDhNZ+IqWUvs6MUZwLXx9zQeJYoYlg5QW0mda
+        V1T7oXfgOUtmpFrHLyACxMmCcv0SSB+W37BqX5CC3oKNIxVUmFeidzSA6er1sA0L0NwUfEuHe6n5
+        b1LKinOXEpZ60XA6OQ4nR8PR5MATMqWxXfQ+n8dXN7P5xw+Xsz/Tyffz9fwc9qIqFlR5UXjgGWY4
+        heEF1QZvKm3Xa4/LjAksd3u3m0yOp+Px0f0NPs3Ojr5envLk95fRfHYWnGYnJzAmK2KI2s6tW9Rt
+        2dmtEikM9HQVWPkN/d3qZAxCplqGO4cN7bHytbC78oX18ySF4VJyLm/gvR3sZn9sbuD3Xj2BiWwP
+        ArxqX5qcQiscwZZuxvRTdbsVjPOofftA1i1DQ2dF050Can0Qzo1AJLUbCQ5WLTRmQWmYFLuptOEJ
+        klQZEewv2Z0ETw2Amz07ncp5wPM5fbsla+NS+6ViK5KsrRSKJpStIOweuC1f0My6tK33xfYcZGaG
+        xiQtbN8tCdf0thuRXvTzl8upseaypALmXCZXFK3hTNFwWrNMUBgITIW7/7pxLhhHg0vRv+9HWhRg
+        WioKdhoTA34YhKNBMB0MpxdhEIVvo9HkB/aryvShTRhcDEdRMI7GQ2uTcKlbTBtFZXKpYgQnE+bS
+        jg3m307f2ylEEgMtY3uQGAFo+7JxSxVZIpT2aHbMweAaFxAW68cHwRP3mGU119jzBsSDi7CfuSlb
+        Lvee2YfWGxKUxCT5/hTnDkxBVXZPdxTOQqbrTs02K4t+AWJDejTzS9XsvgowKjoiqloawuNEVgLZ
+        QnG9GbrHoHlwUmW5W8ilVAQx2fqTYonmQzXbdUpU46lsiTc/6Zoi2gAnM6ygnAn6+BR4ogz6wDua
+        zQVVS6kK6LhiJG7u35iUZSej67+NQr39B40NkItUCQAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes,
+        X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO,
+        X-GitHub-Request-Id, Deprecation, Sunset
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - default-src 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 20 Aug 2023 13:10:06 GMT
+      ETag:
+      - W/"fd23f7015eb26e67c70fdda1c08ad43ce0147c18402b0989db1f7ce7fb545a23"
+      Last-Modified:
+      - Sun, 20 Aug 2023 13:04:41 GMT
+      Referrer-Policy:
+      - origin-when-cross-origin, strict-origin-when-cross-origin
+      Server:
+      - GitHub.com
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding, Accept, X-Requested-With
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-GitHub-Media-Type:
+      - github.v3; format=json
+      X-GitHub-Request-Id:
+      - D3A9:17FC:30BE93:651CC0:64E210AE
+      X-RateLimit-Limit:
+      - '5000'
+      X-RateLimit-Remaining:
+      - '4992'
+      X-RateLimit-Reset:
+      - '1692540307'
+      X-RateLimit-Resource:
+      - core
+      X-RateLimit-Used:
+      - '8'
+      X-XSS-Protection:
+      - '0'
+      github-authentication-token-expiration:
+      - 2023-11-18 09:09:55 -0500
+      x-accepted-github-permissions:
+      - issues=read
+      x-github-api-version-selected:
+      - '2022-11-28'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PyGithub/Python
+    method: GET
+    uri: https://api.github.com/repos/scttnlsn/sql-critic-demo/issues/2/comments
+  response:
+    body:
+      string: '[]'
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes,
+        X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO,
+        X-GitHub-Request-Id, Deprecation, Sunset
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Content-Length:
+      - '2'
+      Content-Security-Policy:
+      - default-src 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 20 Aug 2023 13:10:06 GMT
+      ETag:
+      - '"993213b14177fe6e3661c925f7f1a99b23dba18ebeab0d4c433a50c14c9af9af"'
+      Referrer-Policy:
+      - origin-when-cross-origin, strict-origin-when-cross-origin
+      Server:
+      - GitHub.com
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding, Accept, X-Requested-With
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-GitHub-Media-Type:
+      - github.v3; format=json
+      X-GitHub-Request-Id:
+      - D3A9:17FC:30BEE2:651D62:64E210AE
+      X-RateLimit-Limit:
+      - '5000'
+      X-RateLimit-Remaining:
+      - '4991'
+      X-RateLimit-Reset:
+      - '1692540307'
+      X-RateLimit-Resource:
+      - core
+      X-RateLimit-Used:
+      - '9'
+      X-XSS-Protection:
+      - '0'
+      github-authentication-token-expiration:
+      - 2023-11-18 09:09:55 -0500
+      x-accepted-github-permissions:
+      - issues=read; pull_requests=read
+      x-github-api-version-selected:
+      - '2022-11-28'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PyGithub/Python
+    method: GET
+    uri: https://api.github.com/repos/scttnlsn/sql-critic-demo/issues/2
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA62WXU/bMBSG/0tuR0mattBFQrvpLqZpdCC2sU1T5CZu4uHYwXbKuoj/vtfOB7Ro
+        QAtXaZ1zHh+/58OpvUpxL/JyY0od+T4p2WHGTF4tDhNZ+IqWUvs6MUZwLXx9zQeJYoYlg5QW0mda
+        V1T7oXfgOUtmpFrHLyACxMmCcv0SSB+W37BqX5CC3oKNIxVUmFeidzSA6er1sA0L0NwUfEuHe6n5
+        b1LKinOXEpZ60XA6OQ4nR8PR5MATMqWxXfQ+n8dXN7P5xw+Xsz/Tyffz9fwc9qIqFlR5UXjgGWY4
+        heEF1QZvKm3Xa4/LjAksd3u3m0yOp+Px0f0NPs3Ojr5envLk95fRfHYWnGYnJzAmK2KI2s6tW9Rt
+        2dmtEikM9HQVWPkN/d3qZAxCplqGO4cN7bHytbC78oX18ySF4VJyLm/gvR3sZn9sbuD3Xj2BiWwP
+        ArxqX5qcQiscwZZuxvRTdbsVjPOofftA1i1DQ2dF050Can0Qzo1AJLUbCQ5WLTRmQWmYFLuptOEJ
+        klQZEewv2Z0ETw2Amz07ncp5wPM5fbsla+NS+6ViK5KsrRSKJpStIOweuC1f0My6tK33xfYcZGaG
+        xiQtbN8tCdf0thuRXvTzl8upseaypALmXCZXFK3hTNFwWrNMUBgITIW7/7pxLhhHg0vRv+9HWhRg
+        WioKdhoTA34YhKNBMB0MpxdhEIVvo9HkB/aryvShTRhcDEdRMI7GQ2uTcKlbTBtFZXKpYgQnE+bS
+        jg3m307f2ylEEgMtY3uQGAFo+7JxSxVZIpT2aHbMweAaFxAW68cHwRP3mGU119jzBsSDi7CfuSlb
+        Lvee2YfWGxKUxCT5/hTnDkxBVXZPdxTOQqbrTs02K4t+AWJDejTzS9XsvgowKjoiqloawuNEVgLZ
+        QnG9GbrHoHlwUmW5W8ilVAQx2fqTYonmQzXbdUpU46lsiTc/6Zoi2gAnM6ygnAn6+BR4ogz6wDua
+        zQVVS6kK6LhiJG7u35iUZSej67+NQr39B40NkItUCQAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes,
+        X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO,
+        X-GitHub-Request-Id, Deprecation, Sunset
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - default-src 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 20 Aug 2023 13:10:06 GMT
+      ETag:
+      - W/"fd23f7015eb26e67c70fdda1c08ad43ce0147c18402b0989db1f7ce7fb545a23"
+      Last-Modified:
+      - Sun, 20 Aug 2023 13:04:41 GMT
+      Referrer-Policy:
+      - origin-when-cross-origin, strict-origin-when-cross-origin
+      Server:
+      - GitHub.com
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding, Accept, X-Requested-With
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-GitHub-Media-Type:
+      - github.v3; format=json
+      X-GitHub-Request-Id:
+      - D3A9:17FC:30BF14:651DD2:64E210AE
+      X-RateLimit-Limit:
+      - '5000'
+      X-RateLimit-Remaining:
+      - '4990'
+      X-RateLimit-Reset:
+      - '1692540307'
+      X-RateLimit-Resource:
+      - core
+      X-RateLimit-Used:
+      - '10'
+      X-XSS-Protection:
+      - '0'
+      github-authentication-token-expiration:
+      - 2023-11-18 09:09:55 -0500
+      x-accepted-github-permissions:
+      - issues=read
+      x-github-api-version-selected:
+      - '2022-11-28'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"body": "foo\n\n<!--- comment made by sqlcritic --->"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '55'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - PyGithub/Python
+    method: POST
+    uri: https://api.github.com/repos/scttnlsn/sql-critic-demo/issues/2/comments
+  response:
+    body:
+      string: '{"url":"https://api.github.com/repos/scttnlsn/sql-critic-demo/issues/comments/1685282075","html_url":"https://github.com/scttnlsn/sql-critic-demo/pull/2#issuecomment-1685282075","issue_url":"https://api.github.com/repos/scttnlsn/sql-critic-demo/issues/2","id":1685282075,"node_id":"IC_kwDOKIXDx85kc10b","user":{"login":"scttnlsn","id":578446,"node_id":"MDQ6VXNlcjU3ODQ0Ng==","avatar_url":"https://avatars.githubusercontent.com/u/578446?u=07952acf88ad146353b2495923dc487e934d1203&v=4","gravatar_id":"","url":"https://api.github.com/users/scttnlsn","html_url":"https://github.com/scttnlsn","followers_url":"https://api.github.com/users/scttnlsn/followers","following_url":"https://api.github.com/users/scttnlsn/following{/other_user}","gists_url":"https://api.github.com/users/scttnlsn/gists{/gist_id}","starred_url":"https://api.github.com/users/scttnlsn/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/scttnlsn/subscriptions","organizations_url":"https://api.github.com/users/scttnlsn/orgs","repos_url":"https://api.github.com/users/scttnlsn/repos","events_url":"https://api.github.com/users/scttnlsn/events{/privacy}","received_events_url":"https://api.github.com/users/scttnlsn/received_events","type":"User","site_admin":false},"created_at":"2023-08-20T13:10:07Z","updated_at":"2023-08-20T13:10:07Z","author_association":"OWNER","body":"foo\n\n<!---
+        comment made by sqlcritic --->","reactions":{"url":"https://api.github.com/repos/scttnlsn/sql-critic-demo/issues/comments/1685282075/reactions","total_count":0,"+1":0,"-1":0,"laugh":0,"hooray":0,"confused":0,"heart":0,"rocket":0,"eyes":0},"performed_via_github_app":null}'
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes,
+        X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO,
+        X-GitHub-Request-Id, Deprecation, Sunset
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Content-Length:
+      - '1650'
+      Content-Security-Policy:
+      - default-src 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 20 Aug 2023 13:10:07 GMT
+      ETag:
+      - '"7871af2b33b2343b07f5ab9f6a586ec8ba276ff031ae3b93bec8520a3b1dc147"'
+      Location:
+      - https://api.github.com/repos/scttnlsn/sql-critic-demo/issues/comments/1685282075
+      Referrer-Policy:
+      - origin-when-cross-origin, strict-origin-when-cross-origin
+      Server:
+      - GitHub.com
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding, Accept, X-Requested-With
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-GitHub-Media-Type:
+      - github.v3; format=json
+      X-GitHub-Request-Id:
+      - D3A9:17FC:30BF57:651E60:64E210AE
+      X-RateLimit-Limit:
+      - '5000'
+      X-RateLimit-Remaining:
+      - '4989'
+      X-RateLimit-Reset:
+      - '1692540307'
+      X-RateLimit-Resource:
+      - core
+      X-RateLimit-Used:
+      - '11'
+      X-XSS-Protection:
+      - '0'
+      github-authentication-token-expiration:
+      - 2023-11-18 09:09:55 -0500
+      x-accepted-github-permissions:
+      - issues=write; pull_requests=write
+      x-github-api-version-selected:
+      - '2022-11-28'
+    status:
+      code: 201
+      message: Created
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PyGithub/Python
+    method: GET
+    uri: https://api.github.com/repos/scttnlsn/sql-critic-demo/issues/2/comments
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA52U247TMBCGX6WES5p1mh4VUbigXKwQrRaxsIJFkeu4ialjB9tJt0R9d8ZO9tBK
+        LKRXSZz5P4//8cz32isV9yIvM6bQEUK4YBcpM1m5viAyR4oWUiNNjBFcC6R/cZ8oZhjxE5pLxLQu
+        qUYQmVNhNBpMZuNwFgbTsdcHZM7jY/oT8l+ZRck5Cl86dAv2j7juzwn4rLRDSJIlXvRI73tCJjS2
+        i97lu3i7W6w+XN4s7mbjLRkEa4gvNVVeVHtcpkxA1P0xWtR4OhuNJk8xHxdXky83S05+Xg9Xi6tg
+        mc7nEIwrbLA6PYVb1G0B7FZECgPOulqUqKG/reYjIKSqZbhsbWrPFdLCHgv539WBwI3kXO5AfZrs
+        8U053gA9qB4ITKRnEEBVI2kyCl7BEQ724Eybbsk4RY3sA2prGRp8VjTplFCrgXR2AjKpXXM4WLnW
+        0BWFYVJ0S+xICSSpUizYb9ydBEoNANevnU7lFKCkle3gTtJGUqNCsQqTvbVCUUJZBcaegTvRAs3s
+        Cwp3+9r2HNjMDI1xktu+22Cu6aHvEUWxge2wgbgwCId+MPPD4PNgGA2CKJh+A11ZJP+MwaXJpIqx
+        1pIwZz/wVl+X7z8BYC2TPXxupLwVt+L1C9/3e+1k6uU4ob31vgeTsRmMPfj7xjmBiSujnRbPtubZ
+        MxYu4P0e4JU0mMdElgKsCPreq4F7+M2D4zLN3EImpcJwHHiF4bKBpoLxYdcpVo1SSbKlzSvdU8g/
+        AKMLqjZS5WB1xXDczPEYF4UXCZjXhx9/AOY+CBtJBgAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes,
+        X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO,
+        X-GitHub-Request-Id, Deprecation, Sunset
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - default-src 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 20 Aug 2023 13:10:07 GMT
+      ETag:
+      - W/"4851d7312e4d227a8e47f415bad437b46dfc7d4a0bb9eb49c3f7382e809547b1"
+      Referrer-Policy:
+      - origin-when-cross-origin, strict-origin-when-cross-origin
+      Server:
+      - GitHub.com
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding, Accept, X-Requested-With
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-GitHub-Media-Type:
+      - github.v3; format=json
+      X-GitHub-Request-Id:
+      - D3A9:17FC:30C075:6520A8:64E210AF
+      X-RateLimit-Limit:
+      - '5000'
+      X-RateLimit-Remaining:
+      - '4988'
+      X-RateLimit-Reset:
+      - '1692540307'
+      X-RateLimit-Resource:
+      - core
+      X-RateLimit-Used:
+      - '12'
+      X-XSS-Protection:
+      - '0'
+      github-authentication-token-expiration:
+      - 2023-11-18 09:09:55 -0500
+      x-accepted-github-permissions:
+      - issues=read; pull_requests=read
+      x-github-api-version-selected:
+      - '2022-11-28'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"body": "bar\n\n<!--- comment made by sqlcritic --->"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '55'
+      Content-Type:
+      - application/json
+      User-Agent:
+      - PyGithub/Python
+    method: PATCH
+    uri: https://api.github.com/repos/scttnlsn/sql-critic-demo/issues/comments/1685282075
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA52U247TMBCGX6WES5p1mp6iiMIF5WKF6GoRCyu0UuQ4bmLq2MF2WkrUd2fsZA+t
+        REV65cSe//McPNN4teJe7BXGVDpGCFfsKmemqNMrIkukaCU10sQYwbVA+hf3iWKGET+jpURM65pq
+        BJYlFUaj0SyahlEYzKfeEJAlT47pL8j/ZFY15yh87dAd2D/iupMT8EVuh+Aky7z4mT70hMxoYje9
+        6w/JZre8+XR9v/wdTTdkFKRgX2uqvLjxuMyZAKvHMDrUdB5NJrOXmM/L29m3+xUnP+/GN8vbYJUv
+        FmCMt9hgdRqF29RdAexVRAoDmXW1qFFLf79dTICQq47hvLWunSukhT0X8r+rA4ZrybncgfrU2eOX
+        cnwBelI9EZjILyCAqkHSFBRyBSEcbOBMm37OOEWD7AK1tQwNeVY06+VQpwF3dgI8aVxzOFidauiK
+        yjAp+jl2pASSVDkW7A/uTwKlBoDr115ROQUo6dZ2cC9pK2lQpdgWk71NhaKEsi0k9gLciRZoZl9R
+        eNt3tucgzczQBGel7bs15poehh5RFBu4DhuwC4Nw7AeRHwZfR+N4FMTB/Afo6io7ZxNZG1ybQqoE
+        ay0Jc+kH3s331ccvcJjKbA+/KVYP4kG8feX7/qCbTIMSZ3SQ7gcwGdvBOIDTdy4TmLgy2mlxtjUv
+        nrHwAB/vgFxJg3lCZC0gFcHQezNyi98uHNd54TYKKRWGcOAThssamgrGh92nWLVKJcmGtp90T8H/
+        ABJdUbWWqoRUbxlO2jme4KryYgHz+vAXFR+kzEcGAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes,
+        X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO,
+        X-GitHub-Request-Id, Deprecation, Sunset
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - default-src 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 20 Aug 2023 13:10:08 GMT
+      ETag:
+      - W/"25b190a7d67a1f33aa23896060590b2d730660770838da6d3e3389d7b0080510"
+      Referrer-Policy:
+      - origin-when-cross-origin, strict-origin-when-cross-origin
+      Server:
+      - GitHub.com
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding, Accept, X-Requested-With
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-GitHub-Media-Type:
+      - github.v3; format=json
+      X-GitHub-Request-Id:
+      - D3A9:17FC:30C0A4:652101:64E210AF
+      X-RateLimit-Limit:
+      - '5000'
+      X-RateLimit-Remaining:
+      - '4987'
+      X-RateLimit-Reset:
+      - '1692540307'
+      X-RateLimit-Resource:
+      - core
+      X-RateLimit-Used:
+      - '13'
+      X-XSS-Protection:
+      - '0'
+      github-authentication-token-expiration:
+      - 2023-11-18 09:09:55 -0500
+      x-accepted-github-permissions:
+      - issues=write; pull_requests=write
+      x-github-api-version-selected:
+      - '2022-11-28'
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PyGithub/Python
+    method: GET
+    uri: https://api.github.com/repos/scttnlsn/sql-critic-demo/issues/2/comments
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA52U247TMBCGX6WYS5p1mh4VUbigXKwQrRaxsIJFkeu4qaljB9tJKVHfnbHTPbQS
+        FemVE3v+z3PwzPcalVqgGK2tLUyMMSn4VcbtulxeUZVjzQplsKHWSmEkNr9EQDW3nAYpyxXmxpTM
+        YLDMmbQG90aTYTSJwvEQdQGZi+SY/oz8T2ZRCoGjlx59AAdHXH9yAr7I7Qic5CmKn+hdJFXKEreJ
+        rt8lm+1s8eH6bvZ7MtzQXrgE+9IwjeIaCZVxCVYPYRxQw/FkMBg9x3yc3Yy+3M0F/XnbX8xuwnk2
+        nYIxqYgl+jQKv2kOBXBXUSUtZNbXosQN/W01HQAh0weG99a5dq6QDvZUyP+uDhiulBBqC+pTZ49f
+        yvEF+FH1SOAyu4AAqhoru2aQKwhh7wLnxrZzxitq7BaorWMYyLNmaSuHDhpwZyvBk9o3h4eVSwNd
+        UViuZDvHjpRAUjojkv8h7UmgNADw/doqKq8AJatcB7eSNpIaF5pXhO5cKjSjjFeQ2AtwJ1qg2V3B
+        4G3fup6DNHPLEpLmru9WRBi27yKqGbFwHbFgF4VRPwgnQRR+7vXjXhiH42+gK4v0nM3E2ZDSrpVO
+        iDGKcp9+4C2+zt9/gsOlSnfwuyT6Xt7L1y+CIOgcJlMnJynrLHcdmIzNYOzA6RufCUJ9Gd20ONua
+        F89YeIAPd0CulCUioaqUkIqwi171/BI0iyBltvYba6U0gXDgE4bLCpoKxofbZ0Q3Sq3ohjWfbMfA
+        /xASXTC9UjqHVFecJM0cT0hRoFjCvN7/+AuxxTBiSQYAAA==
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Access-Control-Expose-Headers:
+      - ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes,
+        X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO,
+        X-GitHub-Request-Id, Deprecation, Sunset
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Content-Encoding:
+      - gzip
+      Content-Security-Policy:
+      - default-src 'none'
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sun, 20 Aug 2023 13:10:08 GMT
+      ETag:
+      - W/"235e6cb24f207016362f152cf5a0d0ed45fcbdcc2590a7c343d99555867bdb46"
+      Referrer-Policy:
+      - origin-when-cross-origin, strict-origin-when-cross-origin
+      Server:
+      - GitHub.com
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding, Accept, X-Requested-With
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-GitHub-Media-Type:
+      - github.v3; format=json
+      X-GitHub-Request-Id:
+      - D3A9:17FC:30C152:652264:64E210B0
+      X-RateLimit-Limit:
+      - '5000'
+      X-RateLimit-Remaining:
+      - '4986'
+      X-RateLimit-Reset:
+      - '1692540307'
+      X-RateLimit-Resource:
+      - core
+      X-RateLimit-Used:
+      - '14'
+      X-XSS-Protection:
+      - '0'
+      github-authentication-token-expiration:
+      - 2023-11-18 09:09:55 -0500
+      x-accepted-github-permissions:
+      - issues=read; pull_requests=read
+      x-github-api-version-selected:
+      - '2022-11-28'
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -4,10 +4,11 @@ from dataclasses import dataclass
 from functools import cached_property
 from typing import Optional
 
-from sqlcritic.analyze import Span, Spans, analyze
+from sqlcritic.comparison import Commparison
+from sqlcritic.github import Pull
 from sqlcritic.notify import GitHubNotifier
 from sqlcritic.storage import Storage
-from sqlcritic.trace import load_data, parse_spans
+from sqlcritic.trace import load_data
 
 
 @dataclass(frozen=True)
@@ -44,10 +45,17 @@ def run(config: Config):
     storage.put(config.sha, data)
 
     if config.pr_number is not None:
-        spans = parse_spans(data)
-        results = analyze(spans)
-        notifier = GitHubNotifier(config.repo, config.pr_number, config.repo_token)
-        notifier.notify(results)
+        pull = Pull(config.repo, config.repo_token, config.pr_number)
+
+        comparison = Commparison(
+            storage=storage,
+            base_key=pull.base_sha,
+            head_key=pull.head_sha,
+            # TODO: maybe just pass in `data` here so we don't have to refetch the head data
+        )
+
+        notifier = GitHubNotifier(pull)
+        notifier.notify(comparison.new_analysis_results())
 
 
 if __name__ == "__main__":
