@@ -25,10 +25,10 @@ collector = Collector()
 
 def pytest_sessionstart(session):
     # only necessary if your app is not already instrumented
-    # SQLite here is just an example - there is auto instrumentation for lots
+    # Psycopg2 here is just an example - there is auto instrumentation for lots
     # of different database adapters
-    from opentelemetry.instrumentation.sqlite3 import SQLite3Instrumentor
-    SQLite3Instrumentor().instrument()
+    from opentelemetry.instrumentation.psycopg2 import Psycopg2Instrumentor
+    Psycopg2Instrumentor().instrument()
 
 def pytest_runtest_call(item):
     path, line, name = item.reportinfo()
@@ -49,6 +49,10 @@ The analysis of queries collected during your test suite happens in a GitHub act
   with:
     repo-token: ${{ secrets.GITHUB_TOKEN }}
     data-path: "results.json"
+
+    # provide this if you'd like analyses based explained query plans
+    # (typically you'd connect to your test database after the test suite runs)
+    db-url: "postgresql://postgres:postgres@localhost:5432/postgres"
 ```
 
 The results will be posted as a PR comment in the repo utilizing this action.

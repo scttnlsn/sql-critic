@@ -26,7 +26,9 @@ class QueryExplainer:
                 sql = span.attributes["db.statement"]
                 f = fingerprint(sql)
                 if f not in results:
-                    results[f] = self.adapter.explain(sql)
+                    result = self.adapter.explain(sql)
+                    if result:
+                        results[f] = result
 
         self.adapter.close()
         return results
