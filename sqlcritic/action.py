@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from functools import cached_property
 from typing import Optional
 
-from sqlcritic.comparison import Commparison
+from sqlcritic.comparison import Comparison
 from sqlcritic.github import Pull
 from sqlcritic.notify import GitHubNotifier
 from sqlcritic.storage import Storage
@@ -13,7 +13,7 @@ from sqlcritic.trace import load_data
 
 @dataclass(frozen=True)
 class Config:
-    # inputs
+    # required inputs
     data_path: str
     repo_token: str
     aws_access_key_id: str
@@ -25,6 +25,9 @@ class Config:
     sha: str
     ref: str
     repo: str
+
+    # optional inputs
+    db_url: Optional[str] = None
 
     @cached_property
     def pr_number(self) -> Optional[int]:
@@ -51,7 +54,7 @@ def run(config: Config):
         if config.sha == pull.head_sha:
             head_data = data
 
-        comparison = Commparison(
+        comparison = Comparison(
             storage=storage,
             base_key=pull.base_sha,
             head_key=pull.head_sha,
@@ -77,6 +80,11 @@ if __name__ == "__main__":
         ref=os.environ["GITHUB_REF"],
         repo=os.environ["GITHUB_REPOSITORY"],
     )
+
+    db_url = os.environ.get("INPUT_DB-URL")
+    if db_url:
+        config.db_url = db_url
+
     print(f"::debug::{config}")
 
     run(config)

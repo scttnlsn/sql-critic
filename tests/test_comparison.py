@@ -1,5 +1,5 @@
 from sqlcritic.analyze import AnalysisResult, AnalysisType
-from sqlcritic.comparison import Commparison
+from sqlcritic.comparison import Comparison
 from sqlcritic.trace import Test, load_data
 
 
@@ -19,7 +19,7 @@ def test_new_analysis_results():
         }
     )
 
-    comparison = Commparison(
+    comparison = Comparison(
         storage=storage,
         base_key="test-base-sha",
         head_key="test-head-sha",
@@ -53,7 +53,7 @@ def test_new_analysis_results_same_spans():
         }
     )
 
-    comparison = Commparison(
+    comparison = Comparison(
         storage=storage,
         base_key="test-base-sha",
         head_key="test-head-sha",

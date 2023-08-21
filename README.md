@@ -75,7 +75,7 @@ python -m pytest
 When dependencies are updated in `pyproject.toml` then we need to regenerate `requirements.txt`
 (which is used for the GitHub action):
 
-`pip-compile -o requirements.txt pyproject.toml`
+`pip-compile pyproject.toml`
 
 #### Releasing
 

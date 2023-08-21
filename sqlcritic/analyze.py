@@ -1,10 +1,13 @@
 import hashlib
-import json
+import os
 from abc import ABC, abstractmethod
 from collections.abc import Iterator
 from dataclasses import dataclass
 from enum import Enum
 from typing import List, Set
+from urllib.parse import urlparse
+
+import psycopg2
 
 from sqlcritic.trace import Span, Spans, Test
 
@@ -136,8 +139,43 @@ class NPlusOneAnalyzer(Analyzer):
         self.results[fingerprint].tests.add(self._test_info(self._source_span))
 
 
+class SchemaAnalyzer(Analyzer):
+    def analyze(self):
+        # TODO: how do we get this from config instead of environ?
+        db_url = os.environ.get("INPUT_DB-URL")
+        if not db_url:
+            return []
+
+        scheme = urlparse(db_url).scheme
+        if scheme in ["postgres", "postgresql"]:
+            self._analyze_postgres(db_url)
+        else:
+            # TODO: support other database types
+            raise NotImplementedError(f"unsupported database type: {scheme}")
+
+        return []
+
+    def visit(self, span: Span):
+        pass
+
+    def _analyze_postgres(self, db_url: str):
+        print(f"::debug::connecting to {db_url}")
+        connection = psycopg2.connect(db_url)
+        cursor = connection.cursor()
+
+        # Postgres might not use an index when there's not much (no) data
+        cursor.execute("SET enable_seqscan = OFF;")
+
+        # TODO: what if a different schema is being used?
+        cursor.execute("SET search_path TO public;")
+
+        connection.rollback()
+        connection.close()
+
+
 analyzers = [
     NPlusOneAnalyzer,
+    SchemaAnalyzer,
 ]
 
 

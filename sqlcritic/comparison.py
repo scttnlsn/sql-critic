@@ -18,7 +18,7 @@ class MissingHeadError(Exception):
         self.sha = sha
 
 
-class Commparison:
+class Comparison:
     def __init__(
         self,
         storage: Storage,
