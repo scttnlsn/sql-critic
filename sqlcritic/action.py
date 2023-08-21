@@ -79,11 +79,8 @@ if __name__ == "__main__":
         sha=os.environ["GITHUB_SHA"],
         ref=os.environ["GITHUB_REF"],
         repo=os.environ["GITHUB_REPOSITORY"],
+        db_url=os.environ.get("INPUT_DB-URL"),
     )
-
-    db_url = os.environ.get("INPUT_DB-URL")
-    if db_url:
-        config.db_url = db_url
 
     print(f"::debug::{config}")
 
