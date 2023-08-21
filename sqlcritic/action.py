@@ -45,13 +45,13 @@ def run(config: Config):
         secret_access_key=config.aws_secret_access_key,
         bucket=config.aws_s3_bucket,
     )
-    storage.put(f"{config.sha}/spans.json", data)
+    storage.put(f"{config.sha}/spans", data)
 
     if config.db_url:
         explainer = QueryExplainer(config.db_url)
         spans = parse_spans(data)
         results = explainer.run(spans)
-        storage.put(f"{config.sha}/explain.json", results)
+        storage.put(f"{config.sha}/explain", results)
 
     if config.pr_number is not None:
         pull = Pull(config.repo, config.repo_token, config.pr_number)

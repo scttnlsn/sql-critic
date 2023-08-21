@@ -58,8 +58,8 @@ def test_run(tmp_path, mocker):
     results = analyze(spans)
     lines = notifier.format(results)
 
-    storage_put.assert_any_call(f"{config.sha}/spans.json", data)
-    storage_put.assert_any_call(f"{config.sha}/explain.json", {"test": "test"})
+    storage_put.assert_any_call(f"{config.sha}/spans", data)
+    storage_put.assert_any_call(f"{config.sha}/explain", {"test": "test"})
     comment.assert_called_once_with(lines)
 
 
@@ -88,6 +88,6 @@ def test_run_no_pull(tmp_path, mocker):
 
     run(config)
 
-    storage_put.assert_any_call(f"{config.sha}/spans.json", data)
-    storage_put.assert_any_call(f"{config.sha}/explain.json", {"test": "test"})
+    storage_put.assert_any_call(f"{config.sha}/spans", data)
+    storage_put.assert_any_call(f"{config.sha}/explain", {"test": "test"})
     assert not comment.called
