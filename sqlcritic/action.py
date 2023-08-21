@@ -1,14 +1,14 @@
-import json
 import os
 from dataclasses import dataclass
 from functools import cached_property
 from typing import Optional
 
 from sqlcritic.comparison import Comparison
+from sqlcritic.database import QueryExplainer
 from sqlcritic.github import Pull
 from sqlcritic.notify import GitHubNotifier
 from sqlcritic.storage import Storage
-from sqlcritic.trace import load_data
+from sqlcritic.trace import load_data, parse_spans
 
 
 @dataclass(frozen=True)
@@ -45,7 +45,13 @@ def run(config: Config):
         secret_access_key=config.aws_secret_access_key,
         bucket=config.aws_s3_bucket,
     )
-    storage.put(config.sha, data)
+    storage.put(f"{config.sha}/spans.json", data)
+
+    if config.db_url:
+        explainer = QueryExplainer(config.db_url)
+        spans = parse_spans(data)
+        results = explainer.run(spans)
+        storage.put(f"{config.sha}/explain.json", results)
 
     if config.pr_number is not None:
         pull = Pull(config.repo, config.repo_token, config.pr_number)

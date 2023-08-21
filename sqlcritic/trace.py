@@ -39,7 +39,7 @@ class Spans:
         self.index = {span.span_id: span for span in self.spans}
 
     def __iter__(self):
-        yield from self.spans
+        yield from sorted(self.spans, key=lambda span: span.start_time)
 
     def parent_span(self, span: Span) -> Optional[Span]:
         if span.parent_id is not None:

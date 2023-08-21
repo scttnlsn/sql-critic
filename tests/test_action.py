@@ -31,6 +31,7 @@ def test_run(tmp_path, mocker):
         sha="a03f0b090aecd9185310cf6200c1879085dc87cd",
         ref="refs/pull/1/merge",
         repo="foo/bar",
+        db_url="postgresql://postgres:postgres@localhost:5432/postgres",
     )
 
     mocker.patch(
@@ -48,6 +49,7 @@ def test_run(tmp_path, mocker):
     storage_get.side_effect = mock_storage_get
     storage_put = mocker.patch("sqlcritic.storage.Storage.put")
     comment = mocker.patch("sqlcritic.github.Pull.comment")
+    mocker.patch("sqlcritic.database.QueryExplainer.run", return_value={"test": "test"})
 
     run(config)
 
@@ -56,7 +58,8 @@ def test_run(tmp_path, mocker):
     results = analyze(spans)
     lines = notifier.format(results)
 
-    storage_put.assert_called_once_with(config.sha, data)
+    storage_put.assert_any_call(f"{config.sha}/spans.json", data)
+    storage_put.assert_any_call(f"{config.sha}/explain.json", {"test": "test"})
     comment.assert_called_once_with(lines)
 
 
@@ -76,12 +79,15 @@ def test_run_no_pull(tmp_path, mocker):
         sha="a03f0b090aecd9185310cf6200c1879085dc87cd",
         ref="refs/heads/branchname",
         repo="foo/bar",
+        db_url="postgresql://postgres:postgres@localhost:5432/postgres",
     )
 
     storage_put = mocker.patch("sqlcritic.storage.Storage.put")
     comment = mocker.patch("sqlcritic.github.Pull.comment")
+    mocker.patch("sqlcritic.database.QueryExplainer.run", return_value={"test": "test"})
 
     run(config)
 
+    storage_put.assert_any_call(f"{config.sha}/spans.json", data)
+    storage_put.assert_any_call(f"{config.sha}/explain.json", {"test": "test"})
     assert not comment.called
-    storage_put.assert_called_once_with(config.sha, data)

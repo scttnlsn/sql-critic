@@ -3,6 +3,8 @@ from pathlib import Path
 import pytest
 import vcr
 
+from sqlcritic.trace import load_data, parse_spans
+
 
 @pytest.fixture
 def vcr_cassette(request):
@@ -16,3 +18,9 @@ def vcr_cassette(request):
         match_on=["method", "scheme", "host", "port", "path"],
     ) as cassette:
         yield cassette
+
+
+@pytest.fixture
+def spans():
+    data = load_data("tests/fixtures/test-spans.json")
+    return parse_spans(data)

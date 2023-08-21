@@ -1,13 +1,5 @@
-import pytest
-
 from sqlcritic.analyze import AnalysisResult, AnalysisType, analyze
-from sqlcritic.trace import Test, load_data, parse_spans
-
-
-@pytest.fixture
-def spans():
-    data = load_data("tests/fixtures/test-spans.json")
-    return parse_spans(data)
+from sqlcritic.trace import Test
 
 
 def test_nplusone(spans):
