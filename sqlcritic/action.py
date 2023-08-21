@@ -47,11 +47,15 @@ def run(config: Config):
     if config.pr_number is not None:
         pull = Pull(config.repo, config.repo_token, config.pr_number)
 
+        head_data = None
+        if config.sha == pull.head_sha:
+            head_data = data
+
         comparison = Commparison(
             storage=storage,
             base_key=pull.base_sha,
             head_key=pull.head_sha,
-            # TODO: maybe just pass in `data` here so we don't have to refetch the head data
+            head_data=head_data,
         )
 
         notifier = GitHubNotifier(pull)

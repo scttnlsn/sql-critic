@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Iterator
+from typing import Iterator, Optional
 
 from sqlcritic.analyze import AnalysisResult, analyze
 from sqlcritic.storage import Storage
@@ -19,10 +19,17 @@ class MissingHeadError(Exception):
 
 
 class Commparison:
-    def __init__(self, storage: Storage, base_key: str, head_key: str):
+    def __init__(
+        self,
+        storage: Storage,
+        base_key: str,
+        head_key: str,
+        head_data: Optional[any] = None,
+    ):
         self.storage = storage
         self.base_key = base_key
         self.head_key = head_key
+        self.head_data = head_data
 
     @cached_property
     def base_results(self) -> Iterator[AnalysisResult]:
@@ -35,7 +42,9 @@ class Commparison:
 
     @cached_property
     def head_results(self) -> Iterator[AnalysisResult]:
-        data = self.storage.get(self.head_key)
+        data = self.head_data
+        if data is None:
+            data = self.storage.get(self.head_key)
         if data is None:
             raise MissingHeadError(self.head_key)
 
