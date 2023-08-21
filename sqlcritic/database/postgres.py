@@ -57,6 +57,8 @@ class PostgresAdapter:
                 return res[0]
         except psycopg2.errors.UndefinedTable:
             return None
+        finally:
+            self.connection.rollback()
 
 
 if __name__ == "__main__":
