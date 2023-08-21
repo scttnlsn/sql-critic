@@ -9,6 +9,5 @@ def test_postgres_explain(spans):
 
     assert len(results) > 0
     for sql, plan in results.items():
-        print(sql)
         assert sql.strip().startswith("SELECT")
         assert "Plan" in plan  # output from Postgres explain

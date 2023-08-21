@@ -1,7 +1,7 @@
 from urllib.parse import urlparse
 
 from sqlcritic.database.postgres import PostgresAdapter
-from sqlcritic.trace import Spans
+from sqlcritic.trace import Spans, SpanType
 
 
 class QueryExplainer:
@@ -20,13 +20,20 @@ class QueryExplainer:
         self.adapter.connect()
 
         for span in spans:
-            if "db.statement" in span.attributes and span.name == "SELECT":
-                # this span is a `select` query
-                sql = span.attributes["db.statement"]
-                if sql not in results:
-                    result = self.adapter.explain(sql)
-                    if result:
-                        results[sql] = result
+            if span.span_type == SpanType.DB and span.name == "SELECT":
+                descends_from_test = any(
+                    [
+                        ancestor.span_type == SpanType.TEST
+                        for ancestor in spans.ancestors(span)
+                    ]
+                )
+                if descends_from_test:
+                    # this span is a `select` query executed from a test
+                    sql = span.sql
+                    if sql not in results:
+                        result = self.adapter.explain(sql)
+                        if result:
+                            results[sql] = result
 
         self.adapter.close()
         return results

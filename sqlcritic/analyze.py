@@ -7,7 +7,7 @@ from typing import List, Set
 
 import psycopg2
 
-from sqlcritic.trace import Span, Spans, Test
+from sqlcritic.trace import Span, Spans, SpanType, Test
 from sqlcritic.utils import fingerprint
 
 
@@ -58,12 +58,12 @@ class NPlusOneAnalyzer(Analyzer):
 
     def visit(self, span: Span):
         if (
-            "db.statement" in span.attributes
+            span.span_type == SpanType.DB
             and span.name == "SELECT"
             and span.parent_id is not None
         ):
             # this is a db query span
-            sql = span.attributes["db.statement"]
+            sql = span.sql
 
             if self._source_span is None:
                 # searching for the N+1 - maybe this span is the source that triggered it
@@ -99,7 +99,7 @@ class NPlusOneAnalyzer(Analyzer):
         if len(self._n_spans) > 1:
             self._save_result()
         self._source_span = span
-        self._source_sql = span.attributes["db.statement"]
+        self._source_sql = span.sql
         self._n_spans = []
         self._n_sql = None
 
@@ -111,12 +111,8 @@ class NPlusOneAnalyzer(Analyzer):
                 # we've traversed to the root span
                 raise ValueError("span did not originate from a test")
 
-            if "test.name" in parent_span.attributes:
-                return Test(
-                    path=parent_span.attributes["test.path"],
-                    line=parent_span.attributes["test.line"],
-                    name=parent_span.attributes["test.name"],
-                )
+            if parent_span.span_type == SpanType.TEST:
+                return parent_span.test
 
             span = parent_span
 

@@ -2,9 +2,25 @@ import json
 from collections.abc import Iterator
 from dataclasses import dataclass
 from datetime import datetime
+from enum import Enum
 from typing import Dict, List, Optional
 
 from dateutil import parser as dateparser
+
+
+class SpanType(Enum):
+    DB = "DB"
+    TEST = "TEST"
+    UNKNOWN = "UNKNOWN"
+
+
+@dataclass(frozen=True, order=True)
+class Test:
+    __test__ = False
+
+    path: str
+    line: int
+    name: str
 
 
 @dataclass
@@ -32,6 +48,35 @@ class Span:
     def __hash__(self):
         return hash((self.name, self.trace_id, self.span_id, self.parent_id))
 
+    @property
+    def span_type(self) -> SpanType:
+        if "db.statement" in self.attributes:
+            return SpanType.DB
+        elif "test.name" in self.attributes:
+            return SpanType.TEST
+        else:
+            return SpanType.UNKNOWN
+
+    @property
+    def sql(self) -> Optional[str]:
+        """
+        Returns the query SQL if this span is of type `DB`
+        """
+        if self.span_type == SpanType.DB:
+            return self.attributes["db.statement"]
+
+    @property
+    def test(self) -> Optional[Test]:
+        """
+        Returns the test info if this span is of type `TEST`
+        """
+        if self.span_type == SpanType.TEST:
+            return Test(
+                path=self.attributes["test.path"],
+                line=self.attributes["test.line"],
+                name=self.attributes["test.name"],
+            )
+
 
 class Spans:
     def __init__(self, spans: Iterator[Span]):
@@ -42,17 +87,22 @@ class Spans:
         yield from sorted(self.spans, key=lambda span: span.start_time)
 
     def parent_span(self, span: Span) -> Optional[Span]:
+        """
+        Returns the parent of the given span.
+        """
         if span.parent_id is not None:
             return self.index[span.parent_id]
 
-
-@dataclass(frozen=True, order=True)
-class Test:
-    __test__ = False
-
-    path: str
-    line: int
-    name: str
+    def ancestors(self, span: Span) -> List[Span]:
+        """
+        Returns all ancestors of the given span in order (child comes after parent)
+        """
+        ancestors = []
+        parent = self.parent_span(span)
+        while parent is not None:
+            ancestors.append(parent)
+            parent = self.parent_span(parent)
+        return ancestors
 
 
 def parse_spans(data: List[dict]) -> Spans:
