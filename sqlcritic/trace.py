@@ -55,10 +55,5 @@ class Test:
     name: str
 
 
-def load_data(path: str) -> List[dict]:
-    with open(path) as f:
-        return json.load(f)
-
-
 def parse_spans(data: List[dict]) -> Spans:
     return Spans([Span.parse(item) for item in data])

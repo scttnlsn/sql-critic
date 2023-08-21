@@ -8,7 +8,8 @@ from sqlcritic.database import QueryExplainer
 from sqlcritic.github import Pull
 from sqlcritic.notify import GitHubNotifier
 from sqlcritic.storage import Storage
-from sqlcritic.trace import load_data, parse_spans
+from sqlcritic.trace import parse_spans
+from sqlcritic.utils import load_data
 
 
 @dataclass(frozen=True)

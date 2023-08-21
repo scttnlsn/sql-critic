@@ -8,8 +8,7 @@ def test_postgres_explain(spans):
     results = query_explainer.run(spans)
 
     assert len(results) > 0
-    for fingerprint, plan in results.items():
-        assert len(fingerprint) == 40  # sha1 hash
+    for sql, plan in results.items():
+        print(sql)
+        assert sql.strip().startswith("SELECT")
         assert "Plan" in plan  # output from Postgres explain
-
-    print(results)

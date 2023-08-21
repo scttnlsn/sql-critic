@@ -2,7 +2,6 @@ from urllib.parse import urlparse
 
 from sqlcritic.database.postgres import PostgresAdapter
 from sqlcritic.trace import Spans
-from sqlcritic.utils import fingerprint
 
 
 class QueryExplainer:
@@ -24,11 +23,10 @@ class QueryExplainer:
             if "db.statement" in span.attributes and span.name == "SELECT":
                 # this span is a `select` query
                 sql = span.attributes["db.statement"]
-                f = fingerprint(sql)
-                if f not in results:
+                if sql not in results:
                     result = self.adapter.explain(sql)
                     if result:
-                        results[f] = result
+                        results[sql] = result
 
         self.adapter.close()
         return results

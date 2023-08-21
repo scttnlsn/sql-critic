@@ -5,7 +5,8 @@ from sqlcritic.action import Config, run
 from sqlcritic.analyze import analyze
 from sqlcritic.github import Pull
 from sqlcritic.notify import GitHubNotifier
-from sqlcritic.trace import load_data, parse_spans
+from sqlcritic.trace import parse_spans
+from sqlcritic.utils import load_data
 
 
 def mock_storage_get(key: str):

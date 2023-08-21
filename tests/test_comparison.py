@@ -1,6 +1,7 @@
 from sqlcritic.analyze import AnalysisResult, AnalysisType
 from sqlcritic.comparison import Comparison
-from sqlcritic.trace import Test, load_data
+from sqlcritic.trace import Test
+from sqlcritic.utils import load_data
 
 
 class MockStorage:

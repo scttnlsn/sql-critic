@@ -3,7 +3,8 @@ from pathlib import Path
 import pytest
 import vcr
 
-from sqlcritic.trace import load_data, parse_spans
+from sqlcritic.trace import parse_spans
+from sqlcritic.utils import load_data
 
 
 @pytest.fixture
