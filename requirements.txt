@@ -42,8 +42,6 @@ opentelemetry-semantic-conventions==0.40b0
     # via opentelemetry-sdk
 psycopg2==2.9.7
     # via sqlcritic (pyproject.toml)
-psycopg2-binary==2.9.7
-    # via sqlcritic (pyproject.toml)
 pycparser==2.21
     # via cffi
 pygithub==1.59.1
