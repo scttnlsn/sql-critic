@@ -11,6 +11,14 @@ class PostgresAdapter:
     def connect(self):
         self.connection = psycopg2.connect(self.db_url)
 
+        with self.connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';"
+            )
+            res = cursor.fetchmany()
+            tables = [item[0] for item in res]
+            print(f"::debug::tables={tables}")
+
     def close(self):
         if self.connection:
             self.connection.rollback()

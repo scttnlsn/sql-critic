@@ -11,3 +11,5 @@ def test_postgres_explain(spans):
     for fingerprint, plan in results.items():
         assert len(fingerprint) == 40  # sha1 hash
         assert "Plan" in plan  # output from Postgres explain
+
+    print(results)
