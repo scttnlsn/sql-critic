@@ -71,6 +71,7 @@ pip install -e ".[dev]"
 #### Testing
 
 ```
+docker-compose up -d # starts a Postgres service
 python -m pytest
 ```
 

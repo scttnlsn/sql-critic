@@ -1,9 +1,7 @@
 from sqlcritic.database import QueryExplainer
 
-db_url = "postgresql://postgres:postgres@localhost:5432/postgres"
 
-
-def test_postgres_explain(spans):
+def test_postgres_explain(spans, db_url):
     query_explainer = QueryExplainer(db_url)
     results = query_explainer.run(spans)
 
