@@ -9,11 +9,17 @@ inputs:
     description: "The path to the JSON file containing the output of the SQL Critic query collector"
     required: true
   aws-access-key-id:
+    description: "AWS access key ID for storage of collector output"
     required: true
   aws-secret-access-key:
+    description: "AWS secret access key for storage of collector output"
     required: true
   aws-s3-bucket:
+    description: "AWS bucket for storage of collector output"
     required: true
+  db-url:
+    description: "Database connection URL for analyzers that need to introspect the schema"
+    required: false
   
 runs:
   using: "docker"
