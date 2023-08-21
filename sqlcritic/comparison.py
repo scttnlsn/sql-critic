@@ -22,34 +22,42 @@ class Comparison:
     def __init__(
         self,
         storage: Storage,
-        base_key: str,
-        head_key: str,
-        head_data: Optional[any] = None,
+        base_sha: str,
+        head_sha: str,
+        head_span_data: Optional[any] = None,
+        head_explain_data: Optional[any] = None,
     ):
         self.storage = storage
-        self.base_key = base_key
-        self.head_key = head_key
-        self.head_data = head_data
+        self.base_sha = base_sha
+        self.head_sha = head_sha
+        self.head_span_data = head_span_data
+        self.head_explain_data = head_explain_data
 
     @cached_property
     def base_results(self) -> Iterator[AnalysisResult]:
-        data = self.storage.get(self.base_key)
-        if data is None:
-            raise MissingBaseError(self.base_key)
+        span_data = self.storage.get(f"{self.base_sha}/spans")
+        if span_data is None:
+            raise MissingBaseError(self.base_sha)
 
-        spans = parse_spans(data)
-        return analyze(spans)
+        explain_data = self.storage.get(f"{self.base_sha}/explain")
+
+        spans = parse_spans(span_data)
+        return analyze(spans, explained=explain_data)
 
     @cached_property
     def head_results(self) -> Iterator[AnalysisResult]:
-        data = self.head_data
-        if data is None:
-            data = self.storage.get(self.head_key)
-        if data is None:
-            raise MissingHeadError(self.head_key)
+        span_data = self.head_span_data
+        if span_data is None:
+            span_data = self.storage.get(f"{self.head_sha}/spans")
+        if span_data is None:
+            raise MissingHeadError(self.head_sha)
 
-        spans = parse_spans(data)
-        return analyze(spans)
+        explain_data = self.head_explain_data
+        if explain_data is None:
+            explain_data = self.storage.get(f"{self.head_sha}/explain")
+
+        spans = parse_spans(span_data)
+        return analyze(spans, explained=explain_data)
 
     def new_analysis_results(self) -> Iterator[AnalysisResult]:
         """

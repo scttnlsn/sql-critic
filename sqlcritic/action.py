@@ -63,9 +63,9 @@ def run(config: Config):
 
         comparison = Comparison(
             storage=storage,
-            base_key=pull.base_sha,
-            head_key=pull.head_sha,
-            head_data=head_data,
+            base_sha=pull.base_sha,
+            head_sha=pull.head_sha,
+            head_span_data=head_data,
         )
 
         notifier = GitHubNotifier(pull)

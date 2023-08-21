@@ -1,11 +1,8 @@
-import os
 from abc import ABC, abstractmethod
 from collections.abc import Iterator
 from dataclasses import dataclass
 from enum import Enum
-from typing import List, Set
-
-import psycopg2
+from typing import List, Optional, Set
 
 from sqlcritic.trace import Span, Spans, SpanType, Test
 from sqlcritic.utils import fingerprint
@@ -13,6 +10,7 @@ from sqlcritic.utils import fingerprint
 
 class AnalysisType(Enum):
     N_PLUS_ONE = "N_PLUS_ONE"
+    SEQ_SCAN = "SEQ_SCAN"
 
 
 @dataclass
@@ -29,8 +27,9 @@ class AnalysisResult:
 
 
 class Analyzer(ABC):
-    def __init__(self, spans: Spans):
+    def __init__(self, spans: Spans, explained: Optional[dict] = None):
         self.spans = spans
+        self.explained = explained
         self.results = {}
 
     def analyze(self) -> List[AnalysisResult]:
@@ -46,10 +45,23 @@ class Analyzer(ABC):
     def finish(self):
         pass
 
+    def test_info(self, span: Span) -> Optional[Test]:
+        parent_span = None
+        while True:
+            parent_span = self.spans.parent_span(span)
+            if parent_span is None:
+                # we've traversed to the root span
+                return None
+
+            if parent_span.span_type == SpanType.TEST:
+                return parent_span.test
+
+            span = parent_span
+
 
 class NPlusOneAnalyzer(Analyzer):
-    def __init__(self, spans: Spans):
-        super().__init__(spans)
+    def __init__(self, spans: Spans, explained: Optional[dict] = None):
+        super().__init__(spans, explained=explained)
         self._source_span = None
         self._source_sql = None
         self._n_spans = []
@@ -103,19 +115,6 @@ class NPlusOneAnalyzer(Analyzer):
         self._n_spans = []
         self._n_sql = None
 
-    def _test_info(self, span: Span) -> Test:
-        parent_span = None
-        while True:
-            parent_span = self.spans.parent_span(span)
-            if parent_span is None:
-                # we've traversed to the root span
-                raise ValueError("span did not originate from a test")
-
-            if parent_span.span_type == SpanType.TEST:
-                return parent_span.test
-
-            span = parent_span
-
     def _save_result(self):
         fingerprint = self._fingerprint()
         if fingerprint not in self.results:
@@ -124,14 +123,52 @@ class NPlusOneAnalyzer(Analyzer):
                 queries=[self._source_sql, self._n_sql],
                 tests=set(),
             )
-        self.results[fingerprint].tests.add(self._test_info(self._source_span))
+        test = self.test_info(self._source_span)
+        if test is not None:
+            self.results[fingerprint].tests.add(test)
+
+
+class SeqScanAnalyzer(Analyzer):
+    # TODO: this is all very Postgres-specific
+    # will need to abstract a lot of this when there are other plan formats
+
+    def visit(self, span: Span):
+        if self.explained is None:
+            return
+
+        if span.span_type == SpanType.DB and span.sql in self.explained:
+            plan = self.explained[span.sql]["Plan"]
+            if self._contains_seq_scan(plan):
+                f = fingerprint(span.sql)
+                if f not in self.results:
+                    self.results[f] = AnalysisResult(
+                        analysis_type=AnalysisType.SEQ_SCAN,
+                        queries=[span.sql],
+                        tests=set(),
+                    )
+                test = self.test_info(span)
+                if test is not None:
+                    self.results[f].tests.add(test)
+
+    def _contains_seq_scan(self, plan: dict) -> bool:
+        if plan["Node Type"] == "Seq Scan":
+            return True
+
+        if "Plans" in plan:
+            # has sub plans
+            return any(
+                [self._contains_seq_scan(sub_plan) for sub_plan in plan["Plans"]]
+            )
+
+        return False
 
 
 analyzers = [
     NPlusOneAnalyzer,
+    SeqScanAnalyzer,
 ]
 
 
-def analyze(spans: Spans) -> Iterator[AnalysisResult]:
+def analyze(spans: Spans, explained: Optional[dict] = None) -> Iterator[AnalysisResult]:
     for analyzer in analyzers:
-        yield from analyzer(spans).analyze()
+        yield from analyzer(spans, explained=explained).analyze()

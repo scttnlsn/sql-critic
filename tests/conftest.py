@@ -62,3 +62,8 @@ def vcr_cassette(request):
 def spans():
     data = load_data("tests/fixtures/test-spans.json")
     return parse_spans(data)
+
+
+@pytest.fixture
+def explained():
+    return load_data("tests/fixtures/test-explained.json")

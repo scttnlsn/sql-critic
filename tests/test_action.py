@@ -10,9 +10,9 @@ from sqlcritic.utils import load_data
 
 
 def mock_storage_get(key: str):
-    if key == "test-base-sha":
+    if key == "test-base-sha/spans":
         return load_data("tests/fixtures/test-spans-base.json")
-    elif key == "test-head-sha":
+    elif key == "test-head-sha/spans":
         return load_data("tests/fixtures/test-spans.json")
 
 

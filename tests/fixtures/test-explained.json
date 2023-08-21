@@ -1,0 +1,39 @@
+{
+    "SELECT \"demo_entry\".\"id\", \"demo_entry\".\"author_id\", \"demo_entry\".\"content\", \"demo_entry\".\"published_at\" FROM \"demo_entry\" ORDER BY \"demo_entry\".\"published_at\" DESC": {
+      "Plan": {
+        "Node Type": "Sort",
+        "Parallel Aware": false,
+        "Async Capable": false,
+        "Startup Cost": 10000000067.82,
+        "Total Cost": 10000000070.25,
+        "Plan Rows": 970,
+        "Plan Width": 56,
+        "Sort Key": [
+          "published_at DESC"
+        ],
+        "Plans": [
+          {
+            "Node Type": "Seq Scan",
+            "Parent Relationship": "Outer",
+            "Parallel Aware": false,
+            "Async Capable": false,
+            "Relation Name": "demo_entry",
+            "Alias": "demo_entry",
+            "Startup Cost": 10000000000,
+            "Total Cost": 10000000019.7,
+            "Plan Rows": 970,
+            "Plan Width": 56
+          }
+        ]
+      },
+      "JIT": {
+        "Functions": 2,
+        "Options": {
+          "Inlining": true,
+          "Optimization": true,
+          "Expressions": true,
+          "Deforming": true
+        }
+      }
+    }
+  }

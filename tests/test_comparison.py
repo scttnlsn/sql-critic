@@ -9,21 +9,21 @@ class MockStorage:
         self.data = data
 
     def get(self, key: str) -> any:
-        return self.data[key]
+        return self.data.get(key)
 
 
 def test_new_analysis_results():
     storage = MockStorage(
         {
-            "test-base-sha": load_data("tests/fixtures/test-spans-base.json"),
-            "test-head-sha": load_data("tests/fixtures/test-spans.json"),
+            "test-base-sha/spans": load_data("tests/fixtures/test-spans-base.json"),
+            "test-head-sha/spans": load_data("tests/fixtures/test-spans.json"),
         }
     )
 
     comparison = Comparison(
         storage=storage,
-        base_key="test-base-sha",
-        head_key="test-head-sha",
+        base_sha="test-base-sha",
+        head_sha="test-head-sha",
     )
 
     results = comparison.new_analysis_results()
@@ -49,15 +49,15 @@ def test_new_analysis_results():
 def test_new_analysis_results_same_spans():
     storage = MockStorage(
         {
-            "test-base-sha": load_data("tests/fixtures/test-spans.json"),
-            "test-head-sha": load_data("tests/fixtures/test-spans.json"),
+            "test-base-sha/spans": load_data("tests/fixtures/test-spans.json"),
+            "test-head-sha/spans": load_data("tests/fixtures/test-spans.json"),
         }
     )
 
     comparison = Comparison(
         storage=storage,
-        base_key="test-base-sha",
-        head_key="test-head-sha",
+        base_sha="test-base-sha",
+        head_sha="test-head-sha",
     )
 
     results = comparison.new_analysis_results()
