@@ -33,11 +33,15 @@ class GitHubNotifier(Notifier):
                     "--- N query",
                     result.queries[1],
                     "```",
-                    "Executed from:",
-                ]
-                for test in sorted(result.tests):
-                    test_label = f"{test.path}::{test.name}"
-                    lines.append(f"* `{test_label}` (line {test.line})")
+                ] + self._source_lines(result)
+
+            elif result.analysis_type == AnalysisType.SEQ_SCAN:
+                lines += [
+                    "**Potential sequential scan detected**",
+                    "```sql",
+                    result.queries[0],
+                    "```",
+                ] + self._source_lines(result)
             lines.append("---")
 
         if len(lines) == 0:
@@ -51,4 +55,11 @@ class GitHubNotifier(Notifier):
             "*Comment made by [sql-critic](https://github.com/scttnlsn/sql-critic)*"
         )
 
+        return lines
+
+    def _source_lines(self, result: AnalysisResult) -> List[str]:
+        lines = ["Executed from:"]
+        for test in sorted(result.tests):
+            test_label = f"{test.path}::{test.name}"
+            lines.append(f"* `{test_label}` (line {test.line})")
         return lines

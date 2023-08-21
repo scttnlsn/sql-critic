@@ -50,7 +50,7 @@ The analysis of queries collected during your test suite happens in a GitHub act
     repo-token: ${{ secrets.GITHUB_TOKEN }}
     data-path: "results.json"
 
-    # provide this if you'd like analyses based explained query plans
+    # provide this if you'd like analyses based on explained query plans
     # (typically you'd connect to your test database after the test suite runs)
     db-url: "postgresql://postgres:postgres@localhost:5432/postgres"
 ```
