@@ -40,10 +40,6 @@ def test_run(tmp_path, mocker):
         ],
     )
     mocker.patch(
-        "sqlcritic.utils.current_git_sha",
-        return_value="a03f0b090aecd9185310cf6200c1879085dc87cd",
-    )
-    mocker.patch(
         "sqlcritic.github.Pull.base_sha",
         return_value="test-base-sha",
         new_callable=PropertyMock,

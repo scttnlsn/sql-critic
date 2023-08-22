@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from functools import cached_property
 from typing import Iterator, List
 
 from .analyze import AnalysisResult, AnalysisType
