@@ -4,5 +4,6 @@ WORKDIR /app
 RUN apk add --update --no-cache build-base python3-dev postgresql-dev git
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
+RUN git config --global --add safe.directory /github/workspace
 ENV PYTHONPATH /app
 CMD ["python", "-m", "sqlcritic.action"]
