@@ -1,5 +1,6 @@
 import hashlib
 import json
+import os
 import subprocess
 from typing import List
 
@@ -16,5 +17,6 @@ def load_data(path: str) -> List[dict]:
 
 
 def current_git_sha() -> str:
+    os.system("git config --global --add safe.directory /github/workspace")
     output = subprocess.check_output("git show --no-patch --format=%P", shell=True)
     return output.decode("utf-8").strip()
