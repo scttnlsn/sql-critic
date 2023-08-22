@@ -33,7 +33,7 @@ def test_run(tmp_path, mocker):
         commit_sha="a03f0b090aecd9185310cf6200c1879085dc87cd",
         db_url="postgresql://postgres:postgres@localhost:5432/postgres",
     )
-    commit_pulls = mocker.patch(
+    mocker.patch(
         "sqlcritic.github.Repo.pulls",
         return_value=[
             Pull(None, 123),

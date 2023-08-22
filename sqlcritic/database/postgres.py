@@ -15,7 +15,7 @@ class PostgresAdapter:
             cursor.execute(
                 "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';"
             )
-            res = cursor.fetchmany()
+            res = cursor.fetchall()
             tables = [item[0] for item in res]
             print(f"::debug::tables={tables}")
 
