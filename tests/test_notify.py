@@ -25,7 +25,7 @@ def test_github_notify(mocker):
 
     comment = mocker.patch("sqlcritic.github.Pull.comment")
 
-    notifier = GitHubNotifier(Pull("someowner/somerepo", "faketoken", 123))
+    notifier = GitHubNotifier(Pull(None, 123))
     notifier.notify(results)
 
     comment.assert_called_once_with(
@@ -49,7 +49,7 @@ def test_github_notify(mocker):
 def test_github_notify_empty(mocker):
     comment = mocker.patch("sqlcritic.github.Pull.comment")
 
-    notifier = GitHubNotifier(Pull("someowner/somerepo", "faketoken", 123))
+    notifier = GitHubNotifier(Pull(None, 123))
     notifier.notify([])
 
     comment.assert_called_once_with(

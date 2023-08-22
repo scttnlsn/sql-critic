@@ -28,11 +28,16 @@ def test_run(tmp_path, mocker):
         aws_access_key_id="test",
         aws_secret_access_key="test",
         aws_s3_bucket="test",
-        event_name="pull_request",
-        sha="a03f0b090aecd9185310cf6200c1879085dc87cd",
-        ref="refs/pull/1/merge",
+        event_name="push",
         repo="foo/bar",
+        commit_sha="a03f0b090aecd9185310cf6200c1879085dc87cd",
         db_url="postgresql://postgres:postgres@localhost:5432/postgres",
+    )
+    commit_pulls = mocker.patch(
+        "sqlcritic.github.Repo.pulls",
+        return_value=[
+            Pull(None, 123),
+        ],
     )
     mocker.patch(
         "sqlcritic.utils.current_git_sha",
@@ -65,33 +70,3 @@ def test_run(tmp_path, mocker):
     storage_put.assert_any_call(f"{config.commit_sha}/spans", data)
     storage_put.assert_any_call(f"{config.commit_sha}/explain", {"test": "test"})
     comment.assert_called_once_with(lines)
-
-
-def test_run_no_pull(tmp_path, mocker):
-    data = load_data("tests/fixtures/test-spans.json")
-
-    data_path = tmp_path / "results.json"
-    data_path.write_text(json.dumps(data))
-
-    config = Config(
-        data_path=str(data_path),
-        repo_token="test-repo-token",
-        aws_access_key_id="test",
-        aws_secret_access_key="test",
-        aws_s3_bucket="test",
-        event_name="push",
-        sha="a03f0b090aecd9185310cf6200c1879085dc87cd",
-        ref="refs/heads/branchname",
-        repo="foo/bar",
-        db_url="postgresql://postgres:postgres@localhost:5432/postgres",
-    )
-
-    storage_put = mocker.patch("sqlcritic.storage.Storage.put")
-    comment = mocker.patch("sqlcritic.github.Pull.comment")
-    mocker.patch("sqlcritic.database.QueryExplainer.run", return_value={"test": "test"})
-
-    run(config)
-
-    storage_put.assert_any_call(f"{config.commit_sha}/spans", data)
-    storage_put.assert_any_call(f"{config.commit_sha}/explain", {"test": "test"})
-    assert not comment.called

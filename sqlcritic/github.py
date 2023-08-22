@@ -11,14 +11,9 @@ from github.Repository import Repository
 class Pull:
     comment_marker = "<!--- comment made by sqlcritic --->"
 
-    def __init__(self, repo_slug: str, token: str, number: int):
-        self.repo_slug = repo_slug
-        self.github = Github(auth=Auth.Token(token))
+    def __init__(self, repo: Repository, number: int):
+        self.repo = repo
         self.number = number
-
-    @cached_property
-    def repo(self) -> Repository:
-        return self.github.get_repo(self.repo_slug)
 
     @cached_property
     def pr(self) -> PullRequest:
@@ -54,3 +49,20 @@ class Pull:
         else:
             issue = self.repo.get_issue(self.number)
             issue.create_comment(comment_body)
+
+
+class Repo:
+    def __init__(self, repo_slug: str, token: str):
+        self.repo_slug = repo_slug
+        self.github = Github(auth=Auth.Token(token))
+
+    @cached_property
+    def _repo(self):
+        return self.github.get_repo(self.repo_slug)
+
+    def pull(self, number: int) -> Pull:
+        return Pull(self._repo, number)
+
+    def pulls(self, commit_sha: str) -> List[Pull]:
+        commit = self._repo.get_commit(commit_sha)
+        return [self.pull(pull.number) for pull in commit.get_pulls()]
