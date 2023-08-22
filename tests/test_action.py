@@ -34,7 +34,10 @@ def test_run(tmp_path, mocker):
         repo="foo/bar",
         db_url="postgresql://postgres:postgres@localhost:5432/postgres",
     )
-
+    mocker.patch(
+        "sqlcritic.utils.current_git_sha",
+        return_value="a03f0b090aecd9185310cf6200c1879085dc87cd",
+    )
     mocker.patch(
         "sqlcritic.github.Pull.base_sha",
         return_value="test-base-sha",
@@ -59,8 +62,8 @@ def test_run(tmp_path, mocker):
     results = analyze(spans)
     lines = notifier.format(results)
 
-    storage_put.assert_any_call(f"{config.sha}/spans", data)
-    storage_put.assert_any_call(f"{config.sha}/explain", {"test": "test"})
+    storage_put.assert_any_call(f"{config.commit_sha}/spans", data)
+    storage_put.assert_any_call(f"{config.commit_sha}/explain", {"test": "test"})
     comment.assert_called_once_with(lines)
 
 
@@ -89,6 +92,6 @@ def test_run_no_pull(tmp_path, mocker):
 
     run(config)
 
-    storage_put.assert_any_call(f"{config.sha}/spans", data)
-    storage_put.assert_any_call(f"{config.sha}/explain", {"test": "test"})
+    storage_put.assert_any_call(f"{config.commit_sha}/spans", data)
+    storage_put.assert_any_call(f"{config.commit_sha}/explain", {"test": "test"})
     assert not comment.called

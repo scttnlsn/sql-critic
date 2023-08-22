@@ -9,7 +9,7 @@ from sqlcritic.github import Pull
 from sqlcritic.notify import GitHubNotifier
 from sqlcritic.storage import Storage
 from sqlcritic.trace import parse_spans
-from sqlcritic.utils import load_data
+from sqlcritic.utils import current_git_sha, load_data
 
 
 @dataclass(frozen=True)
@@ -37,6 +37,13 @@ class Config:
             if ref[1] == "pull":
                 return int(ref[2])
 
+    @cached_property
+    def commit_sha(self) -> str:
+        if self.pr_number is None:
+            return self.sha
+        else:
+            return current_git_sha()
+
 
 def run(config: Config):
     data = load_data(config.data_path)
@@ -46,21 +53,21 @@ def run(config: Config):
         secret_access_key=config.aws_secret_access_key,
         bucket=config.aws_s3_bucket,
     )
-    storage.put(f"{config.sha}/spans", data)
+    storage.put(f"{config.commit_sha}/spans", data)
 
-    print(f"::debug::sha={config.sha}")
+    print(f"::debug::commit_sha={config.commit_sha}")
 
     if config.db_url:
         explainer = QueryExplainer(config.db_url)
         spans = parse_spans(data)
         results = explainer.run(spans)
-        storage.put(f"{config.sha}/explain", results)
+        storage.put(f"{config.commit_sha}/explain", results)
 
     if config.pr_number is not None:
         pull = Pull(config.repo, config.repo_token, config.pr_number)
 
         head_data = None
-        if config.sha == pull.head_sha:
+        if config.commit_sha == pull.head_sha:
             head_data = data
 
         print(f"::debug::base_sha={pull.base_sha}")
