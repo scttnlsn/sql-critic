@@ -101,6 +101,9 @@ if __name__ == "__main__":
         db_url=os.environ.get("INPUT_DB-URL"),
     )
 
+    with open(os.environ["GITHUB_EVENT_PATH"]) as f:
+        print(f"::debug::event={f.read()}")
+
     print(f"::debug::{config}")
 
     run(config)
