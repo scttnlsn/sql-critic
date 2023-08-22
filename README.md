@@ -11,15 +11,18 @@ Receive feedback about dubious queries in a PR comment.
 #### Phase 1: Query collection
 
 This phase hooks into your test suite and records any database queries captured
-by [OpenTelementry](https://opentelemetry.io/) instrumentation.
+by [OpenTelementry](https://opentelemetry.io/) instrumentation.  If your database adapter
+is not already instrumented then you will need to set that up as part of your test suite
+initialization.
 
-**NOTE**: This step only has Python language support at the moment!  However, it's a simple wrapper around OpenTelemetry which could be ported to any other language in theory.
+**NOTE**: This step only has Python language support at the moment!  However, it's a simple wrapper around OpenTelemetry which could be ported to any other language with OpenTelemetry support.
 
-Example using `pytest`:
+Example using `pytest` and `psycopg2`:
 
 ```python
-from sqlcritic.collector import Collector
+# example conftest.py
 
+from sqlcritic.collector import Collector
 
 collector = Collector()
 
@@ -56,6 +59,13 @@ The analysis of queries collected during your test suite happens in a GitHub act
 ```
 
 The results will be posted as a PR comment in the repo utilizing this action.
+
+### Analyses
+
+* **N+1** - detects potential N+1 queries that can be common when using ORMs
+* **Sequential scans** - detects queries that involve potential sequential scans over an entire table
+  - this requires you provide a `db-url` input and preserve the schema in your test database after your test suite runs
+  - TODO: need better heuristics here about which scans are acceptable vs. problematic
 
 ### Development
 
