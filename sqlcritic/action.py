@@ -48,6 +48,8 @@ def run(config: Config):
     )
     storage.put(f"{config.sha}/spans", data)
 
+    print(f"::debug::sha={config.sha}")
+
     if config.db_url:
         explainer = QueryExplainer(config.db_url)
         spans = parse_spans(data)
@@ -60,6 +62,9 @@ def run(config: Config):
         head_data = None
         if config.sha == pull.head_sha:
             head_data = data
+
+        print(f"::debug::base_sha={pull.base_sha}")
+        print(f"::debug::head_sha={pull.head_sha}")
 
         comparison = Comparison(
             storage=storage,
