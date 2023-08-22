@@ -9,7 +9,7 @@ from sqlcritic.github import Repo
 from sqlcritic.notify import GitHubNotifier
 from sqlcritic.storage import Storage
 from sqlcritic.trace import parse_spans
-from sqlcritic.utils import current_git_sha, load_data
+from sqlcritic.utils import load_data
 
 
 @dataclass(frozen=True)
@@ -40,8 +40,6 @@ def run(config: Config):
     )
     storage.put(f"{config.commit_sha}/spans", data)
 
-    print(f"::debug::commit_sha={config.commit_sha}")
-
     if config.db_url:
         explainer = QueryExplainer(config.db_url)
         spans = parse_spans(data)
@@ -55,6 +53,7 @@ def run(config: Config):
         if config.commit_sha == pull.head_sha:
             head_data = data
 
+        print(f"::debug::pull={pull.number}")
         print(f"::debug::base_sha={pull.base_sha}")
         print(f"::debug::head_sha={pull.head_sha}")
 
