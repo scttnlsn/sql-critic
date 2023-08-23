@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sqlcritic"
-version = "0.2.1"
+version = "0.3.0"
 description = "Capture and analyze SQL queries made during a run of your app's test suite"
 readme = "README.md"
 authors = [{ name = "Scott Nelson", email = "scott@scottnelson.co" }]
