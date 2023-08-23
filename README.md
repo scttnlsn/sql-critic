@@ -1,6 +1,7 @@
 # sql-critic
 
-![CI status](https://github.com/scttnlsn/sql-critic/actions/workflows/ci.yml/badge.svg)
+[![CI status](https://github.com/scttnlsn/sql-critic/actions/workflows/ci.yml/badge.svg)](https://github.com/scttnlsn/sql-critic/actions/workflows/ci.yml)
+[![PyPI version](https://img.shields.io/pypi/v/sqlcritic.svg)](https://pypi.org/project/sqlcritic/)
 
 Capture and analyze SQL queries made during a run of your app's test suite.
 
