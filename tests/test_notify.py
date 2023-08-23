@@ -1,3 +1,5 @@
+from unittest.mock import PropertyMock
+
 from sqlcritic.analyze import AnalysisResult, AnalysisType
 from sqlcritic.github import Pull
 from sqlcritic.notify import GitHubNotifier
@@ -24,12 +26,24 @@ def test_github_notify(mocker):
     ]
 
     comment = mocker.patch("sqlcritic.github.Pull.comment")
+    mocker.patch(
+        "sqlcritic.github.Pull.base_sha",
+        new_callable=PropertyMock,
+        return_value="test-base-sha",
+    )
+    mocker.patch(
+        "sqlcritic.github.Pull.head_sha",
+        new_callable=PropertyMock,
+        return_value="test-head-sha",
+    )
 
     notifier = GitHubNotifier(Pull(None, 123))
     notifier.notify(results)
 
     comment.assert_called_once_with(
         [
+            "> Comparing test-head-sha (head) with test-base-sha (base)",
+            "",
             "**Potential N+1 query detected**",
             "```sql",
             "--- source query",
@@ -37,9 +51,13 @@ def test_github_notify(mocker):
             "--- N query",
             results[0].queries[1],
             "```",
-            "Executed from:",
-            "* `tests/test_entries.py::test_entries` (line 9)",
-            "* `tests/test_entries.py::test_entries_other` (line 30)",
+            "<details>",
+            "<summary>Source</summary>",
+            "",
+            "* [`tests/test_entries.py::test_entries` (line 9)](../blob/test-head-sha/tests/test_entries.py#L9)",
+            "* [`tests/test_entries.py::test_entries_other` (line 30)](../blob/test-head-sha/tests/test_entries.py#L30)",
+            "</details>",
+            "",
             "---",
             "*Comment made by [sql-critic](https://github.com/scttnlsn/sql-critic)*",
         ]
@@ -48,12 +66,24 @@ def test_github_notify(mocker):
 
 def test_github_notify_empty(mocker):
     comment = mocker.patch("sqlcritic.github.Pull.comment")
+    mocker.patch(
+        "sqlcritic.github.Pull.base_sha",
+        new_callable=PropertyMock,
+        return_value="test-base-sha",
+    )
+    mocker.patch(
+        "sqlcritic.github.Pull.head_sha",
+        new_callable=PropertyMock,
+        return_value="test-head-sha",
+    )
 
     notifier = GitHubNotifier(Pull(None, 123))
     notifier.notify([])
 
     comment.assert_called_once_with(
         [
+            "> Comparing test-head-sha (head) with test-base-sha (base)",
+            "",
             "No issues detected!",
             "",
             "---",

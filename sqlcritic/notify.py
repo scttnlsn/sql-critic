@@ -20,11 +20,15 @@ class GitHubNotifier(Notifier):
         self.pull.comment(lines)
 
     def format(self, results: Iterator[AnalysisResult]) -> List[str]:
-        lines = []
+        lines = [
+            f"> Comparing {self.pull.head_sha} (head) with {self.pull.base_sha} (base)",
+            "",
+        ]
 
+        result_lines = []
         for result in results:
             if result.analysis_type == AnalysisType.N_PLUS_ONE:
-                lines += [
+                result_lines += [
                     "**Potential N+1 query detected**",
                     "```sql",
                     "--- source query",
@@ -35,16 +39,18 @@ class GitHubNotifier(Notifier):
                 ] + self._source_lines(result)
 
             elif result.analysis_type == AnalysisType.SEQ_SCAN:
-                lines += [
+                result_lines += [
                     "**Potential sequential scan detected**",
                     "```sql",
                     result.queries[0],
                     "```",
                 ] + self._source_lines(result)
-            lines.append("---")
+            result_lines.append("---")
 
-        if len(lines) == 0:
-            lines = [
+        lines += result_lines
+
+        if len(result_lines) == 0:
+            lines += [
                 "No issues detected!",
                 "",
                 "---",
@@ -57,8 +63,18 @@ class GitHubNotifier(Notifier):
         return lines
 
     def _source_lines(self, result: AnalysisResult) -> List[str]:
-        lines = ["Executed from:"]
+        lines = [
+            "<details>",
+            "<summary>Source</summary>",
+            "",
+        ]
         for test in sorted(result.tests):
-            test_label = f"{test.path}::{test.name}"
-            lines.append(f"* `{test_label}` (line {test.line})")
+            test_label = f"`{test.path}::{test.name}` (line {test.line})"
+            test_url = f"../blob/{self.pull.head_sha}/{test.path}#L{test.line}"
+            lines.append(f"* [{test_label}]({test_url})")
+
+        lines += [
+            "</details>",
+            "",
+        ]
         return lines

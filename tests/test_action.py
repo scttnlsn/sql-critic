@@ -58,7 +58,7 @@ def test_run(tmp_path, mocker):
 
     run(config)
 
-    notifier = GitHubNotifier(None)
+    notifier = GitHubNotifier(Pull(None, 123))
     spans = parse_spans(data)
     results = analyze(spans)
     lines = notifier.format(results)
