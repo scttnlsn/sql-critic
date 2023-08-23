@@ -3,10 +3,10 @@ import json
 from typing import List
 
 
-def fingerprint(*items: List[str]) -> str:
-    hashes = [hashlib.sha1(item.encode("utf-8")).hexdigest() for item in items]
+def fingerprint(*items: str) -> str:
+    hashes = [hashlib.sha1(item.encode()).hexdigest() for item in items]
     combined = "-".join(hashes)
-    return hashlib.sha1(combined.encode("utf-8")).hexdigest()
+    return hashlib.sha1(combined.encode()).hexdigest()
 
 
 def load_data(path: str) -> List[dict]:

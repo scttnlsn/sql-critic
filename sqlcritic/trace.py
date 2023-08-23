@@ -2,7 +2,7 @@ from collections.abc import Iterator
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from dateutil import parser as dateparser
 
@@ -28,7 +28,7 @@ class Span:
     trace_id: str
     span_id: str
     parent_id: str
-    attributes: Dict[str, any]
+    attributes: Dict[str, Any]
     start_time: datetime
     end_time: datetime
 
@@ -62,7 +62,10 @@ class Span:
         Returns the query SQL if this span is of type `DB`
         """
         if self.span_type == SpanType.DB:
-            return self.attributes["db.statement"]
+            sql = self.attributes["db.statement"]
+            assert isinstance(sql, str)
+            return sql
+        return None
 
     @property
     def test(self) -> Optional[Test]:
@@ -75,10 +78,11 @@ class Span:
                 line=self.attributes["test.line"],
                 name=self.attributes["test.name"],
             )
+        return None
 
 
 class Spans:
-    def __init__(self, spans: Iterator[Span]):
+    def __init__(self, spans: List[Span]):
         self.spans = set(spans)
         self.index = {span.span_id: span for span in self.spans}
 

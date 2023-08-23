@@ -1,3 +1,10 @@
+lint:
+	black --check .
+	isort --check .
+	
+check:
+	mypy sqlcritic
+
 format:
 	black .
 	isort .
@@ -7,4 +14,4 @@ publish:
 	twine check dist/*
 	twine upload dist/*
 
-.PHONY: format publish
+.PHONY: lint check format publish

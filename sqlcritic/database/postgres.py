@@ -63,7 +63,7 @@ class PostgresAdapter:
                 cursor.execute("DEALLOCATE stmt;")
 
                 return res[0]
-        except psycopg2.errors.UndefinedTable:
+        except psycopg2.errors.UndefinedTable:  # type: ignore
             return None
         finally:
             self.connection.rollback()

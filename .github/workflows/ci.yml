@@ -30,8 +30,10 @@ jobs:
         pip install -e ".[dev]"
     - name: Lint
       run: |
-        black --check .
-        isort --check .
+        make lint
+    - name: Type check
+      run: |
+        make check
     - name: Run test suite
       env:
           DB_URL: "postgresql://postgres:postgres@localhost:5432/postgres"

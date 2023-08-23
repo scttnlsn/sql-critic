@@ -38,6 +38,7 @@ class Pull:
         for comment in comments:
             if self.comment_marker in comment.body:
                 return comment
+        return None
 
     def comment(self, lines: List[str]):
         content = "\n".join(lines)

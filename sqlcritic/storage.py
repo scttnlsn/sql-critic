@@ -1,5 +1,5 @@
 import json
-from typing import Optional
+from typing import Any, Optional
 
 import boto3
 from botocore.exceptions import ClientError
@@ -14,11 +14,11 @@ class Storage:
         self.bucket = bucket
         self.s3 = self.session.resource("s3")
 
-    def put(self, key: str, data: dict):
+    def put(self, key: str, data: Any):
         obj = self.s3.Object(self.bucket, f"{key}.json")
         obj.put(Body=json.dumps(data))
 
-    def get(self, key: str) -> Optional[dict]:
+    def get(self, key: str) -> Optional[Any]:
         try:
             obj = self.s3.Object(self.bucket, f"{key}.json")
             res = obj.get()

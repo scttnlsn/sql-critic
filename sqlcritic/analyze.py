@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from collections.abc import Iterator
 from dataclasses import dataclass
 from enum import Enum
-from typing import List, Optional, Set
+from typing import Dict, List, Optional, Set
 
 from sqlcritic.trace import Span, Spans, SpanType, Test
 from sqlcritic.utils import fingerprint
@@ -30,7 +30,7 @@ class Analyzer(ABC):
     def __init__(self, spans: Spans, explained: Optional[dict] = None):
         self.spans = spans
         self.explained = explained
-        self.results = {}
+        self.results: Dict[str, AnalysisResult] = {}
 
     def analyze(self) -> List[AnalysisResult]:
         for span in self.spans:
@@ -62,10 +62,10 @@ class Analyzer(ABC):
 class NPlusOneAnalyzer(Analyzer):
     def __init__(self, spans: Spans, explained: Optional[dict] = None):
         super().__init__(spans, explained=explained)
-        self._source_span = None
-        self._source_sql = None
-        self._n_spans = []
-        self._n_sql = None
+        self._source_span: Optional[Span] = None
+        self._source_sql: Optional[str] = None
+        self._n_spans: List[Span] = []
+        self._n_sql: Optional[str] = None
         self.results = {}
 
     def visit(self, span: Span):
@@ -139,6 +139,7 @@ class SeqScanAnalyzer(Analyzer):
         if span.span_type == SpanType.DB and span.sql in self.explained:
             plan = self.explained[span.sql]["Plan"]
             if self._contains_seq_scan(plan):
+                assert span.sql is not None
                 f = fingerprint(span.sql)
                 if f not in self.results:
                     self.results[f] = AnalysisResult(

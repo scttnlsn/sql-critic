@@ -1,5 +1,5 @@
 from functools import cached_property
-from typing import Iterator, Optional
+from typing import Any, Iterator, Optional
 
 from sqlcritic.analyze import AnalysisResult, analyze
 from sqlcritic.storage import Storage
@@ -24,8 +24,8 @@ class Comparison:
         storage: Storage,
         base_sha: str,
         head_sha: str,
-        head_span_data: Optional[any] = None,
-        head_explain_data: Optional[any] = None,
+        head_span_data: Optional[Any] = None,
+        head_explain_data: Optional[Any] = None,
     ):
         self.storage = storage
         self.base_sha = base_sha
