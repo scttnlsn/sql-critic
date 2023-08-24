@@ -1,7 +1,61 @@
 import re
-from typing import Optional
+from typing import Iterator, Optional
 
 import psycopg2
+
+from .types import Index
+
+index_query = """
+select
+    pg_indexes.schemaname as schema_name,
+	table_name,
+	index_name,
+	string_agg(column_name, ',') as columns
+from
+	(
+        select
+            t.relname as table_name,
+            i.relname as index_name,
+            a.attname as column_name,
+            (
+                select
+                    i
+                from
+                    (
+                        select
+                            *,
+                            row_number() over () i
+                        from
+                            unnest(indkey) with ordinality as a(v)
+                    ) a
+                where
+                    v = attnum
+            )
+        from
+            pg_class t,
+            pg_class i,
+            pg_index ix,
+            pg_attribute a
+        where
+            t.oid = ix.indrelid
+            and i.oid = ix.indexrelid
+            and a.attrelid = t.oid
+            and a.attnum = any (ix.indkey)
+            and t.relkind = 'r'
+        order by
+            table_name,
+            index_name,
+            i
+     ) raw
+inner join pg_indexes on
+    pg_indexes.tablename = table_name and pg_indexes.indexname = index_name
+where
+	pg_indexes.schemaname != 'pg_catalog' --- exclude internal PG indexes
+group by
+    schema_name,
+	table_name,
+	index_name;
+"""
 
 
 class PostgresAdapter:
@@ -68,14 +122,35 @@ class PostgresAdapter:
         finally:
             self.connection.rollback()
 
+    def indexes(self) -> Iterator[Index]:
+        """
+        Queries for a full list of indexes in the database.
+        """
+        with self.connection.cursor() as cursor:
+            cursor.execute(index_query)
+
+            res = cursor.fetchall()
+            for schema_name, table_name, index_name, columns in res:
+                yield Index(
+                    schema_name=schema_name,
+                    table_name=table_name,
+                    index_name=index_name,
+                    columns=tuple([str(column) for column in columns.split(",")]),
+                )
+
 
 if __name__ == "__main__":
     import json
     import sys
 
-    query = sys.argv[1]
     adapter = PostgresAdapter("postgresql://postgres:postres@localhost:5432/postgres")
     adapter.connect()
-    res = adapter.explain(query)
+
+    # query = sys.argv[1]
+    # res = adapter.explain(query)
+    # res = json.dumps(res)
+
+    res = list(adapter.indexes())
+
     adapter.close()
-    print(json.dumps(res))
+    print(res)

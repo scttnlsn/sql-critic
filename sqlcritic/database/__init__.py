@@ -1,10 +1,12 @@
+from typing import List
 from urllib.parse import urlparse
 
 from sqlcritic.database.postgres import PostgresAdapter
+from sqlcritic.database.types import Index
 from sqlcritic.trace import Spans, SpanType
 
 
-class QueryExplainer:
+class DatabaseConnection:
     def __init__(self, db_url: str):
         self.db_url = db_url
         scheme = urlparse(self.db_url).scheme
@@ -14,7 +16,7 @@ class QueryExplainer:
             # TODO: support other database types
             raise NotImplementedError(f"unsupported database type: {scheme}")
 
-    def run(self, spans: Spans) -> dict:
+    def explain(self, spans: Spans) -> dict:
         results = {}
 
         self.adapter.connect()
@@ -35,5 +37,11 @@ class QueryExplainer:
                         if result:
                             results[sql] = result
 
+        self.adapter.close()
+        return results
+
+    def indexes(self) -> List[Index]:
+        self.adapter.connect()
+        results = list(self.adapter.indexes())
         self.adapter.close()
         return results

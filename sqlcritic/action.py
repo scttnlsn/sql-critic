@@ -1,9 +1,9 @@
 import os
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from typing import Optional
 
 from sqlcritic.comparison import Comparison
-from sqlcritic.database import QueryExplainer
+from sqlcritic.database import DatabaseConnection
 from sqlcritic.github import Repo
 from sqlcritic.notify import GitHubNotifier
 from sqlcritic.storage import Storage
@@ -40,10 +40,13 @@ def run(config: Config):
     storage.put(f"{config.commit_sha}/spans", data)
 
     if config.db_url:
-        explainer = QueryExplainer(config.db_url)
+        database = DatabaseConnection(config.db_url)
         spans = parse_spans(data)
-        results = explainer.run(spans)
-        storage.put(f"{config.commit_sha}/explain", results)
+        metadata = {
+            "explained": database.explain(spans),
+            "indexes": [asdict(index) for index in database.indexes()],
+        }
+        storage.put(f"{config.commit_sha}/metadata", metadata)
 
     repo = Repo(config.repo, config.repo_token)
 

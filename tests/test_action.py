@@ -54,7 +54,9 @@ def test_run(tmp_path, mocker):
     storage_get.side_effect = mock_storage_get
     storage_put = mocker.patch("sqlcritic.storage.Storage.put")
     comment = mocker.patch("sqlcritic.github.Pull.comment")
-    mocker.patch("sqlcritic.database.QueryExplainer.run", return_value={"test": "test"})
+    mocker.patch(
+        "sqlcritic.database.DatabaseConnection.explain", return_value={"test": "test"}
+    )
 
     run(config)
 
@@ -64,5 +66,30 @@ def test_run(tmp_path, mocker):
     lines = notifier.format(results)
 
     storage_put.assert_any_call(f"{config.commit_sha}/spans", data)
-    storage_put.assert_any_call(f"{config.commit_sha}/explain", {"test": "test"})
+    storage_put.assert_any_call(
+        f"{config.commit_sha}/metadata",
+        {
+            "explained": {"test": "test"},
+            "indexes": [
+                {
+                    "columns": ("id",),
+                    "index_name": "demo_author_pkey",
+                    "schema_name": "public",
+                    "table_name": "demo_author",
+                },
+                {
+                    "columns": ("author_id",),
+                    "index_name": "demo_entry_author_id_index",
+                    "schema_name": "public",
+                    "table_name": "demo_entry",
+                },
+                {
+                    "columns": ("id",),
+                    "index_name": "demo_entry_pkey",
+                    "schema_name": "public",
+                    "table_name": "demo_entry",
+                },
+            ],
+        },
+    )
     comment.assert_called_once_with(lines)
