@@ -65,5 +65,8 @@ def spans():
 
 
 @pytest.fixture
-def explained():
-    return load_data("tests/fixtures/test-explained.json")
+def metadata():
+    return {
+        "explained": load_data("tests/fixtures/test-explained.json"),
+        "indexes": [],
+    }

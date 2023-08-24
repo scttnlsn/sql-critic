@@ -27,9 +27,9 @@ class AnalysisResult:
 
 
 class Analyzer(ABC):
-    def __init__(self, spans: Spans, explained: Optional[dict] = None):
+    def __init__(self, spans: Spans, metadata: Optional[dict] = None):
         self.spans = spans
-        self.explained = explained
+        self.metadata = metadata
         self.results: Dict[str, AnalysisResult] = {}
 
     def analyze(self) -> List[AnalysisResult]:
@@ -60,8 +60,8 @@ class Analyzer(ABC):
 
 
 class NPlusOneAnalyzer(Analyzer):
-    def __init__(self, spans: Spans, explained: Optional[dict] = None):
-        super().__init__(spans, explained=explained)
+    def __init__(self, spans: Spans, metadata: Optional[dict] = None):
+        super().__init__(spans, metadata=metadata)
         self._source_span: Optional[Span] = None
         self._source_sql: Optional[str] = None
         self._n_spans: List[Span] = []
@@ -133,11 +133,15 @@ class SeqScanAnalyzer(Analyzer):
     # will need to abstract a lot of this when there are other plan formats
 
     def visit(self, span: Span):
-        if self.explained is None:
+        if self.metadata is None:
             return
 
-        if span.span_type == SpanType.DB and span.sql in self.explained:
-            plan = self.explained[span.sql]["Plan"]
+        explain_data = self.metadata.get("explained")
+        if explain_data is None:
+            return
+
+        if span.span_type == SpanType.DB and span.sql in explain_data:
+            plan = explain_data[span.sql]["Plan"]
             if self._contains_seq_scan(plan):
                 assert span.sql is not None
                 f = fingerprint(span.sql)
@@ -170,6 +174,6 @@ analyzers = [
 ]
 
 
-def analyze(spans: Spans, explained: Optional[dict] = None) -> Iterator[AnalysisResult]:
+def analyze(spans: Spans, metadata: Optional[dict] = None) -> Iterator[AnalysisResult]:
     for analyzer in analyzers:
-        yield from analyzer(spans, explained=explained).analyze()
+        yield from analyzer(spans, metadata=metadata).analyze()

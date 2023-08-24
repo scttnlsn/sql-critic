@@ -52,8 +52,10 @@ def run(config: Config):
 
     for pull in repo.pulls(config.commit_sha):
         head_data = None
+        head_metadata = None
         if config.commit_sha == pull.head_sha:
             head_data = data
+            head_metadata = metadata
 
         print(f"::debug::pull={pull.number}")
         print(f"::debug::base_sha={pull.base_sha}")
@@ -64,6 +66,7 @@ def run(config: Config):
             base_sha=pull.base_sha,
             head_sha=pull.head_sha,
             head_span_data=head_data,
+            head_metadata=head_metadata,
         )
 
         notifier = GitHubNotifier(pull)

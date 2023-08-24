@@ -25,8 +25,8 @@ def test_nplusone(spans):
     ]
 
 
-def test_seq_scan(spans, explained):
-    results = SeqScanAnalyzer(spans, explained=explained).analyze()
+def test_seq_scan(spans, metadata):
+    results = SeqScanAnalyzer(spans, metadata=metadata).analyze()
 
     assert list(results) == [
         AnalysisResult(

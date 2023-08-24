@@ -25,13 +25,13 @@ class Comparison:
         base_sha: str,
         head_sha: str,
         head_span_data: Optional[Any] = None,
-        head_explain_data: Optional[Any] = None,
+        head_metadata: Optional[Any] = None,
     ):
         self.storage = storage
         self.base_sha = base_sha
         self.head_sha = head_sha
         self.head_span_data = head_span_data
-        self.head_explain_data = head_explain_data
+        self.head_metadata = head_metadata
 
     @cached_property
     def base_results(self) -> Iterator[AnalysisResult]:
@@ -39,10 +39,10 @@ class Comparison:
         if span_data is None:
             raise MissingBaseError(self.base_sha)
 
-        explain_data = self.storage.get(f"{self.base_sha}/explain")
+        metadata = self.storage.get(f"{self.base_sha}/metadata")
 
         spans = parse_spans(span_data)
-        return analyze(spans, explained=explain_data)
+        return analyze(spans, metadata=metadata)
 
     @cached_property
     def head_results(self) -> Iterator[AnalysisResult]:
@@ -52,12 +52,12 @@ class Comparison:
         if span_data is None:
             raise MissingHeadError(self.head_sha)
 
-        explain_data = self.head_explain_data
-        if explain_data is None:
-            explain_data = self.storage.get(f"{self.head_sha}/explain")
+        metadata = self.head_metadata
+        if metadata is None:
+            metadata = self.storage.get(f"{self.head_sha}/metadata")
 
         spans = parse_spans(span_data)
-        return analyze(spans, explained=explain_data)
+        return analyze(spans, metadata=metadata)
 
     def new_analysis_results(self) -> Iterator[AnalysisResult]:
         """
