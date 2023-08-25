@@ -58,6 +58,8 @@ s3transfer==0.6.2
     # via boto3
 six==1.16.0
     # via python-dateutil
+sqlglot==17.15.0
+    # via sqlcritic (pyproject.toml)
 typing-extensions==4.7.1
     # via opentelemetry-sdk
 urllib3==1.26.16

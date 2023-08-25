@@ -1,6 +1,7 @@
 from sqlcritic.analyze import (
     AnalysisResult,
     AnalysisType,
+    MissingIndexAnalyzer,
     NPlusOneAnalyzer,
     SeqScanAnalyzer,
 )
@@ -38,5 +39,36 @@ def test_seq_scan(spans, metadata):
                 Test(path="tests/test_entries.py", line=9, name="test_entries"),
                 Test(path="tests/test_entries.py", line=30, name="test_entries_other"),
             },
+        )
+    ]
+
+
+def test_index(spans, metadata):
+    metadata["indexes"] = [
+        {
+            "columns": ("author_id",),
+            "index_name": "demo_entry_author_id_index",
+            "schema_name": "public",
+            "table_name": "demo_entry",
+        },
+        {
+            "columns": ("id",),
+            "index_name": "demo_entry_pkey",
+            "schema_name": "public",
+            "table_name": "demo_entry",
+        },
+    ]
+    results = MissingIndexAnalyzer(spans, metadata=metadata).analyze()
+    assert results == [
+        AnalysisResult(
+            analysis_type=AnalysisType.MISSING_INDEX,
+            queries=[
+                'SELECT "demo_author"."id", "demo_author"."name" FROM "demo_author" WHERE "demo_author"."id" = %s LIMIT 21'
+            ],
+            tests={
+                Test(path="tests/test_entries.py", line=30, name="test_entries_other"),
+                Test(path="tests/test_entries.py", line=9, name="test_entries"),
+            },
+            extra={"demo_author": ["id"]},
         )
     ]

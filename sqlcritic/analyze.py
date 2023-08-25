@@ -1,9 +1,14 @@
+import re
 from abc import ABC, abstractmethod
+from collections import defaultdict
 from collections.abc import Iterator
 from dataclasses import dataclass
 from enum import Enum
-from typing import Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional, Set, Type
 
+from sqlglot import exp, parse_one
+
+from sqlcritic.database.types import Index
 from sqlcritic.trace import Span, Spans, SpanType, Test
 from sqlcritic.utils import fingerprint
 
@@ -11,6 +16,7 @@ from sqlcritic.utils import fingerprint
 class AnalysisType(Enum):
     N_PLUS_ONE = "N_PLUS_ONE"
     SEQ_SCAN = "SEQ_SCAN"
+    MISSING_INDEX = "MISSING_INDEX"
 
 
 @dataclass
@@ -20,6 +26,8 @@ class AnalysisResult:
     queries: List[str]
     # the set of tests which lead to this result
     tests: Set[Test]
+    # extra info
+    extra: Optional[Dict[str, Any]] = None
 
     @property
     def fingerprint(self):
@@ -168,8 +176,88 @@ class SeqScanAnalyzer(Analyzer):
         return False
 
 
-analyzers = [
+class MissingIndexAnalyzer(Analyzer):
+    def visit(self, span: Span):
+        if self.metadata is None:
+            return
+
+        indexes = self.metadata.get("indexes")
+        if indexes is None:
+            return
+
+        if span.span_type == SpanType.DB and span.name == "SELECT":
+            assert span.sql is not None
+
+            test = self.test_info(span)
+            if not test:
+                return
+
+            f = fingerprint(span.sql)
+            sql = span.sql
+
+            # replace '%s' placeholders with '$N' where N=1..
+            r = re.compile(r"\%s")
+            n = len(r.findall(sql))
+            for i in range(1, n + 1):
+                sql = sql.replace("%s", f"${i}", 1)
+
+            ast = parse_one(sql)
+
+            # collect all table aliases
+            table_aliases = {}
+            for node in ast.find_all(exp.From):
+                table_aliases[node.alias_or_name] = node.name
+            for join in ast.find_all(exp.Join):
+                tables = join.find_all(exp.Table)
+                for table in tables:
+                    table_aliases[table.alias_or_name] = table.name
+
+            for where in ast.find_all(exp.Where):
+                columns = where.find_all(exp.Column)
+
+                # group columns by table - if there are multiple tables
+                # then the database will scan each index and create bitmaps
+                # that are combined together
+                by_table = defaultdict(list)
+                for column in columns:
+                    table_name = table_aliases.get(column.table) or column.table
+                    if not table_name:
+                        continue
+                    by_table[table_name].append(column.name)
+
+                # for each table try and find an index that includes all columns
+                # as a contiguous leading subset
+                for table_name, column_names in by_table.items():
+                    found_index = False
+                    for index in indexes:
+                        index = Index(**index)
+                        index_table_name = (
+                            table_aliases.get(index.table_name) or index.table_name
+                        )
+                        if table_name == index_table_name and index.indexes_columns(
+                            column_names
+                        ):
+                            found_index = True
+                            break
+                    if not found_index:
+                        if f not in self.results:
+                            self.results[f] = AnalysisResult(
+                                analysis_type=AnalysisType.MISSING_INDEX,
+                                queries=[span.sql],
+                                tests=set(),
+                                extra=dict(),
+                            )
+                        extra = self.results[f].extra
+                        if extra is not None:
+                            extra[table_name] = column_names
+
+            if f in self.results:
+                self.results[f].tests.add(test)
+
+
+analyzers: List[Type[Analyzer]] = [
     NPlusOneAnalyzer,
+    MissingIndexAnalyzer,
     SeqScanAnalyzer,
 ]
 

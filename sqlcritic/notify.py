@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Iterator, List
+from typing import Any, Dict, Iterator, List
 
 from .analyze import AnalysisResult, AnalysisType
 from .github import Pull
@@ -45,8 +45,20 @@ class GitHubNotifier(Notifier):
                     result.queries[0],
                     "```",
                 ] + self._source_lines(result)
-            result_lines.append("---")
+            elif result.analysis_type == AnalysisType.MISSING_INDEX:
+                result_lines += (
+                    [
+                        "**Missing index**",
+                        "```sql",
+                        result.queries[0],
+                        "```",
+                    ]
+                    + self._column_names(result.extra)
+                    if result.extra
+                    else []
+                )
 
+            result_lines.append("---")
         lines += result_lines
 
         if len(result_lines) == 0:
@@ -77,4 +89,11 @@ class GitHubNotifier(Notifier):
             "</details>",
             "",
         ]
+        return lines
+
+    def _column_names(self, data: Dict[str, Any]) -> List[str]:
+        lines = []
+        for table_name, column_names in data.items():
+            columns = ", ".join(column_names)
+            lines.append(f"- No index on {table_name} for columns: `({columns})`")
         return lines

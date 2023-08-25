@@ -68,5 +68,24 @@ def spans():
 def metadata():
     return {
         "explained": load_data("tests/fixtures/test-explained.json"),
-        "indexes": [],
+        "indexes": [
+            {
+                "columns": ("id",),
+                "index_name": "demo_author_pkey",
+                "schema_name": "public",
+                "table_name": "demo_author",
+            },
+            {
+                "columns": ("author_id",),
+                "index_name": "demo_entry_author_id_index",
+                "schema_name": "public",
+                "table_name": "demo_entry",
+            },
+            {
+                "columns": ("id",),
+                "index_name": "demo_entry_pkey",
+                "schema_name": "public",
+                "table_name": "demo_entry",
+            },
+        ],
     }
