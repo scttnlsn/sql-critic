@@ -67,6 +67,9 @@ The results will be posted as a PR comment in the repo utilizing this action.
 * **Sequential scans** - detects queries that involve potential sequential scans over an entire table
   - this requires you provide a `db-url` input and preserve the schema in your test database after your test suite runs
   - TODO: need better heuristics here about which scans are acceptable vs. problematic
+* **Missing index** - detects when a query's `where` conditions are missing an acceptable index
+  - this also requires you provide a `db-url` input so that `sql-critic` can query for the set of available indexes
+  - TODO: do something similar for `order by`
 
 ### Development
 
