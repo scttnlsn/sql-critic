@@ -95,5 +95,5 @@ class GitHubNotifier(Notifier):
         lines = []
         for table_name, column_names in data.items():
             columns = ", ".join(column_names)
-            lines.append(f"- No index on {table_name} for columns: `({columns})`")
+            lines.append(f"- No index on `{table_name}` for columns: `({columns})`")
         return lines

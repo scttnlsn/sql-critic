@@ -212,6 +212,7 @@ class MissingIndexAnalyzer(Analyzer):
                 for table in tables:
                     table_aliases[table.alias_or_name] = table.name
 
+            # TODO: do something similar for `order by`
             for where in ast.find_all(exp.Where):
                 columns = where.find_all(exp.Column)
 
